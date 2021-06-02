@@ -12,12 +12,10 @@ grada).
 4.Osim preuzimanja novosti
 kada je aplikacija u online režimu, potrebno je omoguciti citanje novosti (kao i ucestvovanje
 u kvizu) i u offline režimu, tako što ce se posljednje procitane novosti keširati na uredaju
-Pitanje: staa ako za taj grad prvi put kao pitanje dosao tj nema kesa
+Pitanje: sta ako za taj grad prvi put kao pitanje dosao tj nema kesa
 	moze li sqlite za kes taj
 	
-6. Znamenitosti – dio kviza u kojem se prikazuje slika neke znamenitosti, a korisnik pogađa u kojoj državi se nalazi.
-	isto ponudjenih 20 slova kao za sliku zastave 
-	
+5.Vijesi na stranom jeziku :(
 	
 	IGRA:
 7.Podatke koji su vezani za kviz (podaci o državama, gradovima i sl.) potrebno je čuvati na Android uređaju.
@@ -33,10 +31,8 @@ pri čemu je potrebno omogućiti da aplikacija radi minimalno na srpskom i engle
 	
 10.Sva podešavanja unutar aplikacije (jezik, broj pitanja, keširanje i sl.)
  potrebno je realizovati kroz posebnu stranicu, koristeći Preference API
-	Pitanje,sta je to?
-	
-11.pri čemu je GUI potrebno implementirati u skladu sa posljednjim trendovima i preporukama (Material Design i sl.).
-		Misli na teme?
+	Pitanje,sta je to? i da li se jezik bira samo pri ulasku u aplikaciju
+
 		
 12.Prije odbrane, aplikaciju je potrebno objaviti na Google Play Store-u.
 	
