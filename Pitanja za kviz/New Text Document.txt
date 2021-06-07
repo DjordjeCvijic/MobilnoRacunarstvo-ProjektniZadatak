@@ -1,0 +1,19 @@
+ar,Argentina,Argentina,Buenos Ajres,Buenos Aires,Cile,Chile,Ruzicasta kuca,Casa Rosada,-34.603722,-58.381592
+br,Brazil,Brazil,Brazilija,Brasilia,Peru,Peru,Statua Hrista Spasitelja,Christ the Redeemer,-15.793889,-47.882778
+eg,Egipat,Egypt,Kairo,Cairo,Libija,Libya,Dolina Kraljeva,Valley of the Kings,30.033333,31.233334
+fr,Francuska,France,Pariz,Paris,Spanija,Spain,Muzej Luvr,Louvre Museum,48.864716,2.349014
+gr,Grcka,Greece,Atina,Athens,Sjeverna Makedonija,Republic of North Macedonia,Meteori,Meteora,37.983810,23.727539
+in,Indija,India,Nju Delhi,New Delhi,Pakistan,Pakistan,Tadz mahal,Taj Mahal,28.644800,77.216721
+it,Italija,Italy,Rim,Rome,Austrija,Austria,Koloseum,Colosseum,41.902782,12.496366
+za,Juznoafricka republika,South African Republic,Kejptaun,Cape Town,Bocvana,Botswana,Nacionalni park Kruger,Kruger National Park,-33.918861,18.423300
+ca,Kanada,Canada,Otava,Ottawa,SAD,USA,Nacionalni Park Banff,Banff National Park,45.424721,-75.695000
+cn,Kina,China,Peking,Beijing,Kazakstan,Kazakhstan,Kineski zid,Chinese wall,39.916668,116.383331
+co,Kolumbija,Colombia,Bogota,Bogota,Panama,Panama,Bogota,Bogota,4.624335,-74.063644
+mx,Meksiko,Mexico,Meksiko siti,Mexico City,SAD,USA,Cicen Ica,Chichen Itza,19.432608,-99.133209
+no,Norveska,Norway,Oslo,Oslo,Svedska,Sweden,Brigen,Bryggen,59.911491,10.757933
+pl,Poljska,Polish,Varsava,Warsaw,Njemacka,Germany,Dvorac Vavel,Wawel Castle,52.237049,21.017532
+ru,Rusija,Russia,Moskva,Moscow,Mongolija,Mongolia,Kremlj,Kremlin,55.751244,37.618423
+us,Sjedinjene americek drzave,United States of America,Vasington,Washington,Kanada,Canada,Nijagarini vodopadi,Niagara Falls
+es,Španija,Spain,Madrid,Madrid,Portugal,Portugal,Korida,Bullfighter
+rs,Srbija,Serbia,Beograd,Belgrade,Rumunija,Romania,Hram Svetog Save,Church of Saint Sava,44.787197,20.457273
+tr,Turska,Turkey,Ankara,Ankara,Gruzija,Georgia,Aja Sofija,Aya Sofia
