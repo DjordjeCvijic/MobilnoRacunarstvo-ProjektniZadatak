@@ -59,7 +59,6 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         CountryDBHelper countryDBHelper = new CountryDBHelper(CapitalCitiesActivity.this);
         CountryDBService.fillDadaBase(countryDBHelper,this);
         countriesDataList= countryDBHelper.getCountries();
-        Log.i("Baza","broj redova"+countryDBHelper.numberOfRows());
 
         questionTv=findViewById(R.id.questionTv);
         answer1Btn=findViewById(R.id.answer1Btn);
@@ -120,8 +119,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedAnswer.equals(currentQuestion.getCapitalCitySr()))
+                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentQuestion.getCapitalCityEn():currentQuestion.getCapitalCitySr()))
                     Toast.makeText(CapitalCitiesActivity.this, "Tacan odgovor", Toast.LENGTH_LONG).show();
+                btn.setBackgroundColor(getResources().getColor(R.color.red,));
                 else
 
                     Toast.makeText(CapitalCitiesActivity.this, "pogresan odgovor", Toast.LENGTH_LONG).show();
@@ -150,16 +150,23 @@ public class CapitalCitiesActivity extends AppCompatActivity {
          currentQuestion=data.get(0);
         LinkedList<String> answers=new LinkedList<>();
         for(Country c : data){
-            answers.add(c.getCapitalCitySr());
+            answers.add(StartScreenActivity.selectedLanguage.equals("en")?c.getCapitalCityEn():c.getCapitalCitySr());
         }
-        questionTv.setText("Glavni grad drzave "+currentQuestion.getCapitalCitySr()+" je?");
+        String country=null;
+
+        if(StartScreenActivity.selectedLanguage.equals("en")){
+            country=currentQuestion.getNameEn();
+        }else{
+            country=currentQuestion.getNameSr();
+        }
+        questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) +" "+ country+" ?");
         i=ran.nextInt(4);
         answer1Btn.setText(answers.get(i));
         answers.remove(i);
         i=ran.nextInt(3);
         answer2Btn.setText(answers.get(i));
         answers.remove(i);
-        i=ran.nextInt(4);
+        i=ran.nextInt(2);
         answer3Btn.setText(answers.get(i));
         answers.remove(i);
 

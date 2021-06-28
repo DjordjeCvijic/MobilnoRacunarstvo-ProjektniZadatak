@@ -8,6 +8,6 @@
     <string name="sights">Znamenitosti</string>
     <string name="areYouSure">Da li ste sigurni ?</string>
     <string name="yes">Da</string>
-    <string name="no">Nw</string>
-    <string name="capitalCitiesQuestion">Koji od ponudjenih gradova je glavni grad drzave  </string>
+    <string name="no">Ne</string>
+    <string name="capitalCitiesQuestion">Koji od ponudjenih gradova je glavni grad drzave </string>
 </resources>

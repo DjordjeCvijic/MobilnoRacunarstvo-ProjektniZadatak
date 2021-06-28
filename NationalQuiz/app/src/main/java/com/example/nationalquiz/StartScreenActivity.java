@@ -17,6 +17,7 @@ public class StartScreenActivity extends AppCompatActivity {
 
     private RadioGroup group;
     private Button btnLanguageSelect;
+    public static String selectedLanguage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +44,8 @@ public class StartScreenActivity extends AppCompatActivity {
         });
     }
     public void setLocale(String languageSelected){
-        String language = (languageSelected.equals("S")) ? "sr" : "en";
-        Locale locale = new Locale(language);
+        selectedLanguage = (languageSelected.equals("S")) ? "sr" : "en";
+        Locale locale = new Locale(selectedLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
