@@ -6,4 +6,8 @@
     <string name="countriesFlags">Countries flags</string>
     <string name="neighboringCountries">Neighboring countries</string>
     <string name="sights">Sights</string>
+    <string name="areYouSure">Are you sure ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="capitalCitiesQuestion">Which of these cities is the capital of the state </string>
 </resources>

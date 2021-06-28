@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
-        <activity android:name=".GameActivity"></activity>
+        <activity android:name=".CapitalCitiesActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".StartScreenActivity">
             <intent-filter>
