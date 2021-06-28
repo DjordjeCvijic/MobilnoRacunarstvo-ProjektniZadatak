@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">National Quiz</string>
+    <string name="startGame">Zapocni igru</string>
+    <string name="capitalCities">Glavni gradovi</string>
+    <string name="countriesFlags">Zastave drzava</string>
+    <string name="neighboringCountries">Susjedne drzave</string>
+    <string name="sights">Znamenitosti</string>
+</resources>

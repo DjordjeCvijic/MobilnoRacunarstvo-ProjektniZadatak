@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">National Quiz</string>
+    <string name="startGame">Start game</string>
+    <string name="capitalCities">Capital cities</string>
+    <string name="countriesFlags">Countries flags</string>
+    <string name="neighboringCountries">Neighboring countries</string>
+    <string name="sights">Sights</string>
+</resources>
