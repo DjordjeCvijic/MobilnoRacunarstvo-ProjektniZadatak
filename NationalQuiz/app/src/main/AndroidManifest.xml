@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nationalquiz">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
-        <activity android:name=".CapitalCitiesActivity"></activity>
+        <activity android:name=".NewsDetailsActivity"></activity>
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".CapitalCitiesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".StartScreenActivity">
             <intent-filter>

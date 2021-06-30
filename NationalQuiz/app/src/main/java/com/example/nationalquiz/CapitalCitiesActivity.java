@@ -4,12 +4,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private Button answer2Btn;
     private Button answer3Btn;
     private Button answer4Btn;
+    private ImageButton newsBtn;
     Country currentQuestion;
 
     int imageToShow=0;
@@ -65,6 +68,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         answer2Btn=findViewById(R.id.answer2Btn);
         answer3Btn=findViewById(R.id.answer3Btn);
         answer4Btn=findViewById(R.id.answer4Btn);
+        newsBtn=findViewById(R.id.newsBtn);
 
         showQuestion();
 
@@ -90,6 +94,16 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(v);
+            }
+        });
+
+        newsBtn.setEnabled(false);
+        newsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(CapitalCitiesActivity.this,NewsActivity.class);
+                intent.putExtra("country",currentQuestion.getMark());
+                startActivity(intent);
             }
         });
 
@@ -119,12 +133,15 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentQuestion.getCapitalCityEn():currentQuestion.getCapitalCitySr()))
+                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentQuestion.getCapitalCityEn():currentQuestion.getCapitalCitySr())) {
                     Toast.makeText(CapitalCitiesActivity.this, "Tacan odgovor", Toast.LENGTH_LONG).show();
-                btn.setBackgroundColor(getResources().getColor(R.color.red,));
-                else
-
+                    btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    newsBtn.setEnabled(true);
+                }
+                else {
+                    btn.setBackgroundColor(getResources().getColor(R.color.red, null));
                     Toast.makeText(CapitalCitiesActivity.this, "pogresan odgovor", Toast.LENGTH_LONG).show();
+                }
                 dialog.dismiss();
             }
         });
