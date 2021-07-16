@@ -9,4 +9,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="capitalCitiesQuestion">Which of these cities is the capital of the state </string>
+    <string name="title_activity_maps">Map</string>
 </resources>

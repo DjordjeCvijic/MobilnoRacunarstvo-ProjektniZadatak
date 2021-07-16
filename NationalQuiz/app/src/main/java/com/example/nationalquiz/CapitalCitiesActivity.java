@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,7 +41,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private Button answer3Btn;
     private Button answer4Btn;
     private ImageButton newsBtn;
-    Country currentQuestion;
+    private ImageButton mapsBtn;
+
+    Country currentCountry;
 
     int imageToShow=0;
     TextView tv;
@@ -69,8 +72,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         answer3Btn=findViewById(R.id.answer3Btn);
         answer4Btn=findViewById(R.id.answer4Btn);
         newsBtn=findViewById(R.id.newsBtn);
+        mapsBtn=findViewById(R.id.mapsBtn);
 
-        showQuestion();
+        setQuestion();
 
         answer1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,12 +101,20 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             }
         });
 
-        newsBtn.setEnabled(false);
+
         newsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(CapitalCitiesActivity.this,NewsActivity.class);
-                intent.putExtra("country",currentQuestion.getMark());
+                intent.putExtra("country",currentCountry.getMark());
+                startActivity(intent);
+            }
+        });
+
+        mapsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CapitalCitiesActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
@@ -112,7 +124,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private void checkAnswer(View v) {
         Button btn = (Button) findViewById(v.getId());
         String selectedAnswer= btn.getText().toString();
-        String correctAnswer= Locale.getDefault().getDisplayLanguage().equals("sr")?currentQuestion.getCapitalCitySr():currentQuestion.getCapitalCityEn();
+
 
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
@@ -133,10 +145,11 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentQuestion.getCapitalCityEn():currentQuestion.getCapitalCitySr())) {
+                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentCountry.getCapitalCityEn():currentCountry.getCapitalCitySr())) {
                     Toast.makeText(CapitalCitiesActivity.this, "Tacan odgovor", Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     newsBtn.setEnabled(true);
+                    mapsBtn.setEnabled(true);
                 }
                 else {
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
@@ -155,16 +168,20 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
     }
 
-    private void showQuestion() {
+    private void setQuestion() {
+        mapsBtn.setEnabled(false);
+        newsBtn.setEnabled(false);
+
         LinkedList<Country>data=new LinkedList<>();
         Random ran=new Random();
         int i;
+        //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
         while(data.size()!=4){
              i=ran.nextInt(20);
             if(!data.contains(countriesDataList.get(i)))
                 data.add(countriesDataList.get(i));
         }
-         currentQuestion=data.get(0);
+        currentCountry=data.get(0);//prva zemlja ce biti za pitanje
         LinkedList<String> answers=new LinkedList<>();
         for(Country c : data){
             answers.add(StartScreenActivity.selectedLanguage.equals("en")?c.getCapitalCityEn():c.getCapitalCitySr());
@@ -172,9 +189,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         String country=null;
 
         if(StartScreenActivity.selectedLanguage.equals("en")){
-            country=currentQuestion.getNameEn();
+            country=currentCountry.getNameEn();
         }else{
-            country=currentQuestion.getNameSr();
+            country=currentCountry.getNameSr();
         }
         questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) +" "+ country+" ?");
         i=ran.nextInt(4);

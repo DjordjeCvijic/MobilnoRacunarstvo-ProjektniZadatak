@@ -16,7 +16,7 @@ import android.content.res.Configuration;
 public class StartScreenActivity extends AppCompatActivity {
 
     private RadioGroup group;
-    private Button btnLanguageSelect;
+    private Button startBtn;
     public static String selectedLanguage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class StartScreenActivity extends AppCompatActivity {
 
         group = findViewById(R.id.group);
         group.check(R.id.srb);
-        btnLanguageSelect = findViewById(R.id.btnLanguageSelect);
+        startBtn = findViewById(R.id.startBtn);
 
-        btnLanguageSelect.setOnClickListener(new View.OnClickListener() {
+        startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -52,5 +52,6 @@ public class StartScreenActivity extends AppCompatActivity {
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
         this.setContentView(R.layout.activity_start_screen);
+
     }
 }
