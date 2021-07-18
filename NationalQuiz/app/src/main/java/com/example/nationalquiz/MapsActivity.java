@@ -6,11 +6,13 @@ import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.nationalquiz.models.Country;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,37 +47,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        // Dodavanje markera za BL
-        LatLng banjaluka = new LatLng(44.7786927, 17.1361274);
-        mMap.addMarker(new MarkerOptions()
-                .position(banjaluka)
-                .title("Banjaluka")
-                .snippet("Najveći grad u RS")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
-        );
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(sydney).zoom(15).build();
+//        mMap.animateCamera(CameraUpdateFactory
+//                .newCameraPosition(cameraPosition));
+
+
+//        LatLng sydney2 = new LatLng(-33.8479731,150.6517908);
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(sydney2).zoom(19f).build();
+//        mMap.addMarker(new MarkerOptions().position(sydney2));
+//        mMap.animateCamera(CameraUpdateFactory
+//                .newCameraPosition(cameraPosition));
+
+//        // Dodavanje markera za BL
+//        LatLng banjaluka = new LatLng(44.7786927, 17.1361274);
+//        mMap.addMarker(new MarkerOptions()
+//                .position(banjaluka)
+//                .title("Banjaluka")
+//                .snippet("Najveći grad u RS")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+//                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
+//        );
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(banjaluka));//pozicionirannej prikaza na taj marrker
+//
+//        // Dodavanje markera za BG
+//        LatLng beograd = new LatLng(44.8151597, 20.2825149);
+//        mMap.addMarker(new MarkerOptions()
+//                .position(beograd)
+//                .title("Beograd")
+//                .snippet("Najveći grad u Srbiji")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+//        );
+
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(banjaluka));//pozicionirannej prikaza na taj marrker
 
-        // Dodavanje markera za BG
-        LatLng beograd = new LatLng(44.8151597, 20.2825149);
+        Country countryToShow=CapitalCitiesActivity.currentCountry;
+        LatLng pointLatLgn = new LatLng(countryToShow.getCapitalCityLatitude(), countryToShow.getCapitalCityLongitude());
         mMap.addMarker(new MarkerOptions()
-                .position(beograd)
-                .title("Beograd")
-                .snippet("Najveći grad u Srbiji")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .position(pointLatLgn)
+                .title(StartScreenActivity.selectedLanguage.equals("en")?countryToShow.getCapitalCityEn():countryToShow.getCapitalCitySr())
+                .snippet("ide neki podnaslov")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
         );
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(banjaluka));//pozicionirannej prikaza na taj marrker
-
+            float zL=6.0f;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pointLatLgn,zL));
         // klik na Info Window
         mMap.setOnInfoWindowClickListener(this);
 
         // zumiranje mape
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
+       // mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
     }
 
     @Override

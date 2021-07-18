@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Enable night mode">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="NIGHT"
+            android:summaryOff="night mode is off"
+            android:summaryOn=" Nigtmopde is activated"
+            android:title="night mode" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Screen orientatiton">
+
+        <ListPreference
+            android:defaultValue="false"
+            android:key="ORIENTATION"
+            android:entries="@array/items_name"
+            android:entryValues="@array/item_value"
+            android:title="Screen orientation" />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>

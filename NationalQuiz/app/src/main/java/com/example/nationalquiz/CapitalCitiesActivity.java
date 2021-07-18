@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private ImageButton newsBtn;
     private ImageButton mapsBtn;
 
-    Country currentCountry;
+    public static Country currentCountry;
 
     int imageToShow=0;
     TextView tv;
@@ -65,6 +67,8 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         CountryDBHelper countryDBHelper = new CountryDBHelper(CapitalCitiesActivity.this);
         CountryDBService.fillDadaBase(countryDBHelper,this);
         countriesDataList= countryDBHelper.getCountries();
+
+        loadSetting();
 
         questionTv=findViewById(R.id.questionTv);
         answer1Btn=findViewById(R.id.answer1Btn);
@@ -208,6 +212,24 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
     }
 
+    private void loadSetting(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean chk_night = sp.getBoolean("NIGHT", false);
+        if (chk_night) {
+
+            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        loadSetting();
+//        super.onResume();
+  //  }
+
     private void prikaziSliku(){
 //        ImageView imageView=findViewById(R.id.imageHolder);
 //        Button button=findViewById(R.id.switchImageBtn);
@@ -256,4 +278,5 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 //        app:layout_constraintStart_toStartOf="parent"
 //        app:layout_constraintTop_toBottomOf="@+id/imageHolder" />
     }
+
 }
