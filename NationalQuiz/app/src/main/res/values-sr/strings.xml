@@ -9,5 +9,12 @@
     <string name="areYouSure">Da li ste sigurni ?</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
+    <string name="title_activity_maps">Mapa</string>
     <string name="capitalCitiesQuestion">Koji od ponudjenih gradova je glavni grad drzave </string>
+    <string name="language">Jezik</string>
+    <string name="selectLanguage">Izaberite jezik</string>
+    <string name="settings">Podesavanja</string>
+    <string name="numberOfQuestions">Broj pitanja</string>
+    <string name="enterNumberOfQuestions">Unesite broj piranja</string>
+    <string name="questions">Pitanja</string>
 </resources>

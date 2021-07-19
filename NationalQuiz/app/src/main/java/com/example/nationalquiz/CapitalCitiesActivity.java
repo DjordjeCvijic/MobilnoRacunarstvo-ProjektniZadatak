@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,8 @@ import java.util.Set;
 public class CapitalCitiesActivity extends AppCompatActivity {
 
     private LinkedList<Country> countriesDataList;
+    private String selectedLanguage;
+    private int numberOfQuestions;
     private TextView questionTv;
     private Button answer1Btn;
     private Button answer2Btn;
@@ -44,12 +47,15 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private Button answer4Btn;
     private ImageButton newsBtn;
     private ImageButton mapsBtn;
+    private TextView numOfQuestionTV;
+
 
     public static Country currentCountry;
 
-    int imageToShow=0;
+    int imageToShow = 0;
     TextView tv;
     CapitalCitiesActivityModelView viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,18 +71,19 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 //                });
 
         CountryDBHelper countryDBHelper = new CountryDBHelper(CapitalCitiesActivity.this);
-        CountryDBService.fillDadaBase(countryDBHelper,this);
-        countriesDataList= countryDBHelper.getCountries();
+        CountryDBService.fillDadaBase(countryDBHelper, this);
+        countriesDataList = countryDBHelper.getCountries();
 
         loadSetting();
 
-        questionTv=findViewById(R.id.questionTv);
-        answer1Btn=findViewById(R.id.answer1Btn);
-        answer2Btn=findViewById(R.id.answer2Btn);
-        answer3Btn=findViewById(R.id.answer3Btn);
-        answer4Btn=findViewById(R.id.answer4Btn);
-        newsBtn=findViewById(R.id.newsBtn);
-        mapsBtn=findViewById(R.id.mapsBtn);
+        numOfQuestionTV=findViewById(R.id.numOfQuestionTV);
+        questionTv = findViewById(R.id.questionTv);
+        answer1Btn = findViewById(R.id.answer1Btn);
+        answer2Btn = findViewById(R.id.answer2Btn);
+        answer3Btn = findViewById(R.id.answer3Btn);
+        answer4Btn = findViewById(R.id.answer4Btn);
+        newsBtn = findViewById(R.id.newsBtn);
+        mapsBtn = findViewById(R.id.mapsBtn);
 
         setQuestion();
 
@@ -109,8 +116,8 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         newsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(CapitalCitiesActivity.this,NewsActivity.class);
-                intent.putExtra("country",currentCountry.getMark());
+                Intent intent = new Intent(CapitalCitiesActivity.this, NewsActivity.class);
+                intent.putExtra("country", currentCountry.getMark());
                 startActivity(intent);
             }
         });
@@ -127,7 +134,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
     private void checkAnswer(View v) {
         Button btn = (Button) findViewById(v.getId());
-        String selectedAnswer= btn.getText().toString();
+        String selectedAnswer = btn.getText().toString();
 
 
         AlertDialog.Builder dialogBuilder;
@@ -136,9 +143,8 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(CapitalCitiesActivity.this);
         final View AnswerConfirmationPopup = inflater.inflate(R.layout.answer_confirmation_popup, null);
 
-        Button yesBtn=AnswerConfirmationPopup.findViewById(R.id.yesBtn);
-        Button noBtn=AnswerConfirmationPopup.findViewById(R.id.noBtn);
-
+        Button yesBtn = AnswerConfirmationPopup.findViewById(R.id.yesBtn);
+        Button noBtn = AnswerConfirmationPopup.findViewById(R.id.noBtn);
 
 
         dialogBuilder.setView(AnswerConfirmationPopup);
@@ -149,13 +155,12 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedAnswer.equals(StartScreenActivity.selectedLanguage.equals("en")?currentCountry.getCapitalCityEn():currentCountry.getCapitalCitySr())) {
+                if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                     Toast.makeText(CapitalCitiesActivity.this, "Tacan odgovor", Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     newsBtn.setEnabled(true);
                     mapsBtn.setEnabled(true);
-                }
-                else {
+                } else {
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
                     Toast.makeText(CapitalCitiesActivity.this, "pogresan odgovor", Toast.LENGTH_LONG).show();
                 }
@@ -175,36 +180,36 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private void setQuestion() {
         mapsBtn.setEnabled(false);
         newsBtn.setEnabled(false);
-
-        LinkedList<Country>data=new LinkedList<>();
-        Random ran=new Random();
+        numOfQuestionTV.setText("0/"+numberOfQuestions);
+        LinkedList<Country> data = new LinkedList<>();
+        Random ran = new Random();
         int i;
         //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
-        while(data.size()!=4){
-             i=ran.nextInt(20);
-            if(!data.contains(countriesDataList.get(i)))
+        while (data.size() != 4) {
+            i = ran.nextInt(20);
+            if (!data.contains(countriesDataList.get(i)))
                 data.add(countriesDataList.get(i));
         }
-        currentCountry=data.get(0);//prva zemlja ce biti za pitanje
-        LinkedList<String> answers=new LinkedList<>();
-        for(Country c : data){
-            answers.add(StartScreenActivity.selectedLanguage.equals("en")?c.getCapitalCityEn():c.getCapitalCitySr());
+        currentCountry = data.get(0);//prva zemlja ce biti za pitanje
+        LinkedList<String> answers = new LinkedList<>();
+        for (Country c : data) {
+            answers.add(selectedLanguage.equals("en") ? c.getCapitalCityEn() : c.getCapitalCitySr());
         }
-        String country=null;
+        String country = null;
 
-        if(StartScreenActivity.selectedLanguage.equals("en")){
-            country=currentCountry.getNameEn();
-        }else{
-            country=currentCountry.getNameSr();
+        if (selectedLanguage.equals("en")) {
+            country = currentCountry.getNameEn();
+        } else {
+            country = currentCountry.getNameSr();
         }
-        questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) +" "+ country+" ?");
-        i=ran.nextInt(4);
+        questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) + " " + country + " ?");
+        i = ran.nextInt(4);
         answer1Btn.setText(answers.get(i));
         answers.remove(i);
-        i=ran.nextInt(3);
+        i = ran.nextInt(3);
         answer2Btn.setText(answers.get(i));
         answers.remove(i);
-        i=ran.nextInt(2);
+        i = ran.nextInt(2);
         answer3Btn.setText(answers.get(i));
         answers.remove(i);
 
@@ -212,25 +217,28 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
     }
 
-    private void loadSetting(){
+    private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedLanguage = sp.getString("LANGUAGE", "false");
 
-        boolean chk_night = sp.getBoolean("NIGHT", false);
-        if (chk_night) {
-
-            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
-        }
+        String number = sp.getString("NUMBER_OF_QUESTION", "5");
+        numberOfQuestions=Integer.parseInt(number);
+//        boolean chk_night = sp.getBoolean("NIGHT", false);
+//        if (chk_night) {
+//
+//            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 //    @Override
 //    protected void onResume() {
 //        loadSetting();
 //        super.onResume();
-  //  }
+    //  }
 
-    private void prikaziSliku(){
+    private void prikaziSliku() {
 //        ImageView imageView=findViewById(R.id.imageHolder);
 //        Button button=findViewById(R.id.switchImageBtn);
 //

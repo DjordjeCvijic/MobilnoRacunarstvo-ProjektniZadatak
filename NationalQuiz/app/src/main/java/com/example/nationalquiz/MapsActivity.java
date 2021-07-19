@@ -3,7 +3,9 @@ package com.example.nationalquiz;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.example.nationalquiz.models.Country;
@@ -20,11 +22,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback ,GoogleMap.OnInfoWindowClickListener{
 
     private GoogleMap mMap;
+    private String selectedLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        loadSetting();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -90,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng pointLatLgn = new LatLng(countryToShow.getCapitalCityLatitude(), countryToShow.getCapitalCityLongitude());
         mMap.addMarker(new MarkerOptions()
                 .position(pointLatLgn)
-                .title(StartScreenActivity.selectedLanguage.equals("en")?countryToShow.getCapitalCityEn():countryToShow.getCapitalCitySr())
+                .title(selectedLanguage.equals("en")?countryToShow.getCapitalCityEn():countryToShow.getCapitalCitySr())
                 .snippet("ide neki podnaslov")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
@@ -109,5 +113,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Klik na Info Window", Toast.LENGTH_SHORT).show();
     }
 
+    private void loadSetting() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedLanguage = sp.getString("LANGUAGE", "false");
+    }
 
-}
+
+    }

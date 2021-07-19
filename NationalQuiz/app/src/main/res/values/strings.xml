@@ -8,6 +8,13 @@
     <string name="areYouSure">Are you sure ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="capitalCitiesQuestion">Which of these cities is the capital of the state </string>
     <string name="title_activity_maps">Map</string>
+    <string name="capitalCitiesQuestion">Which of these cities is the capital of the state </string>
+    <string name="language">Language</string>
+    <string name="selectLanguage">Select language</string>
+    <string name="settings">Settings</string>
+    <string name="numberOfQuestions">Number of questions</string>
+    <string name="enterNumberOfQuestions">Enter number of questions</string>
+    <string name="questions">Questions</string>
+
 </resources>

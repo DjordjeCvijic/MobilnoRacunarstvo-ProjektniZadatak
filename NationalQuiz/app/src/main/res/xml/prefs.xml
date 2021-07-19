@@ -11,15 +11,21 @@
             android:title="night mode" />
 
     </PreferenceCategory>
-    <PreferenceCategory android:title="Screen orientatiton">
+    <PreferenceCategory android:title="@string/language">
 
         <ListPreference
             android:defaultValue="false"
-            android:key="ORIENTATION"
-            android:entries="@array/items_name"
-            android:entryValues="@array/item_value"
-            android:title="Screen orientation" />
+            android:entries="@array/language_items_name"
+            android:entryValues="@array/language_item_value"
+            android:key="LANGUAGE"
+            android:title="@string/selectLanguage" />
+    </PreferenceCategory>
 
-
+    <PreferenceCategory android:title="@string/questions">>
+        <EditTextPreference
+            android:defaultValue="5"
+            android:dialogTitle="@string/enterNumberOfQuestions"
+            android:key="NUMBER_OF_QUESTION"
+            android:title="@string/numberOfQuestions" />
     </PreferenceCategory>
 </PreferenceScreen>
