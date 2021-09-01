@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -46,72 +50,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Country countryToShow=CapitalCitiesActivity.currentCountry;
         mMap = googleMap;
         // prikazi kontrole za zoom
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(sydney).zoom(15).build();
-//        mMap.animateCamera(CameraUpdateFactory
-//                .newCameraPosition(cameraPosition));
-
-
-//        LatLng sydney2 = new LatLng(-33.8479731,150.6517908);
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(sydney2).zoom(19f).build();
-//        mMap.addMarker(new MarkerOptions().position(sydney2));
-//        mMap.animateCamera(CameraUpdateFactory
-//                .newCameraPosition(cameraPosition));
-
-//        // Dodavanje markera za BL
-//        LatLng banjaluka = new LatLng(44.7786927, 17.1361274);
-//        mMap.addMarker(new MarkerOptions()
-//                .position(banjaluka)
-//                .title("Banjaluka")
-//                .snippet("Najveći grad u RS")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-//                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
-//        );
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(banjaluka));//pozicionirannej prikaza na taj marrker
-//
-//        // Dodavanje markera za BG
-//        LatLng beograd = new LatLng(44.8151597, 20.2825149);
-//        mMap.addMarker(new MarkerOptions()
-//                .position(beograd)
-//                .title("Beograd")
-//                .snippet("Najveći grad u Srbiji")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-//        );
-
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(banjaluka));//pozicionirannej prikaza na taj marrker
-
-        Country countryToShow=CapitalCitiesActivity.currentCountry;
         LatLng pointLatLgn = new LatLng(countryToShow.getCapitalCityLatitude(), countryToShow.getCapitalCityLongitude());
-        mMap.addMarker(new MarkerOptions()
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapsActivity.this));
+
+        MarkerOptions marker = new MarkerOptions()
                 .position(pointLatLgn)
                 .title(selectedLanguage.equals("en")?countryToShow.getCapitalCityEn():countryToShow.getCapitalCitySr())
-                .snippet("ide neki podnaslov")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
-        );
+                .snippet(countryToShow.getCityCoatOfArmsImage());
+        mMap.addMarker(marker);
+
+
+
+//        mMap.addMarker(new MarkerOptions()
+//                .position(pointLatLgn)
+//                .title(selectedLanguage.equals("en")?countryToShow.getCapitalCityEn():countryToShow.getCapitalCitySr())
+//                .snippet("ide neki podnaslov")//kada se klikne na marker pojavi se ovo a ako se klikne poziva se setOnInfoWindowClickListener(this);
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+//                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.pin))//pin prreko slicice
+//        );
+
             float zL=6.0f;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pointLatLgn,zL));
-        // klik na Info Window
-        mMap.setOnInfoWindowClickListener(this);
+
 
         // zumiranje mape
-       // mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
     }
 
-    @Override
-    public void onInfoWindowClick(@NonNull Marker marker) {
-        Toast.makeText(this, "Klik na Info Window", Toast.LENGTH_SHORT).show();
-    }
+
 
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -119,4 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+
     }
+}

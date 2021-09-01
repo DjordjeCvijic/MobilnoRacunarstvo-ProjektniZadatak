@@ -29,9 +29,9 @@ public class Preference extends PreferenceActivity {
         boolean chk_night = sp.getBoolean("NIGHT", false);
         if (chk_night) {
             //ovdje mijenjamo boju pozadine
-            Toast.makeText(this, "nocni mod load on", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "nocni mod load on", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "nocni mod load of", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "nocni mod load of", Toast.LENGTH_SHORT).show();
         }
         //ovo je za postavljanje listener-a za promjenu
         CheckBoxPreference checkBoxPreference_instant = (CheckBoxPreference) findPreference("NIGHT");
@@ -41,21 +41,20 @@ public class Preference extends PreferenceActivity {
                 boolean yes = (boolean) obj;
 
                 if (yes) {
-                    Toast.makeText(Preference.this, "nocni mod change on", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(Preference.this, "nocni mod change off", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Preference.this, "nocni mod change on", Toast.LENGTH_SHORT).show();
+                } //else
+                    //Toast.makeText(Preference.this, "nocni mod change off", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
 
         ListPreference lp = (ListPreference) findPreference("LANGUAGE");
-        String language = sp.getString("LANGUAGE", "false");
+        String language = sp.getString("LANGUAGE", "en");
 //        if ("sr".equals(orient)) {
 //            //Toast.makeText(this, "orijentacija load 1", Toast.LENGTH_SHORT).show();
 //            lp.setSummary(lp.getEntry());//ovo da pri pokretanju popuni onaj natpis ispod
 //        }else
-        lp.setSummary(lp.getEntry());
-
+        lp.setSummary(lp.getEntries()[lp.findIndexOfValue(language)]);
         lp.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {

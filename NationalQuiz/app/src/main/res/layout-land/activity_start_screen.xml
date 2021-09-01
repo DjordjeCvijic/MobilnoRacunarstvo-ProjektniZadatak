@@ -27,40 +27,6 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rel_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btnLanguageSelect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <RadioGroup
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/srb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:background="@drawable/srb_selector"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/eng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:background="@drawable/eng_selector"
-                android:button="@null" />
-        </RadioGroup>
-
-    </RelativeLayout>
-
     <Button
         android:id="@+id/btnLanguageSelect"
         android:layout_width="wrap_content"

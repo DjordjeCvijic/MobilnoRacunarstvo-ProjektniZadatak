@@ -8,14 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.example.nationalquiz.data_base.CountryDBHelper;
-import com.example.nationalquiz.data_base.CountryDBService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -93,9 +86,18 @@ public class MainActivity extends AppCompatActivity {
         sightsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CountrySightsActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        finishAffinity();
     }
 
 

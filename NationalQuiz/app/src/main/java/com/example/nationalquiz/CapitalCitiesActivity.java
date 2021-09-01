@@ -40,15 +40,21 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private LinkedList<Country> countriesDataList;
     private String selectedLanguage;
     private int numberOfQuestions;
+    private int numberOfCurrentQuestion;
+    private int numberOfHints=3;
+    private int currentScore=0;
     private TextView questionTv;
     private Button answer1Btn;
     private Button answer2Btn;
     private Button answer3Btn;
     private Button answer4Btn;
+    private Button nextQuestionBtn;
     private ImageButton newsBtn;
     private ImageButton mapsBtn;
-    private TextView numOfQuestionTV;
-
+    private ImageButton hintBtn;
+    private TextView numOfQuestionTv;
+    private TextView numberOfHintsTv;
+    private TextView currentScoreTv;
 
     public static Country currentCountry;
 
@@ -76,7 +82,8 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
         loadSetting();
 
-        numOfQuestionTV=findViewById(R.id.numOfQuestionTV);
+        numOfQuestionTv=findViewById(R.id.numOfQuestionTv);
+        numberOfHintsTv=findViewById(R.id.hintNumberTv);
         questionTv = findViewById(R.id.questionTv);
         answer1Btn = findViewById(R.id.answer1Btn);
         answer2Btn = findViewById(R.id.answer2Btn);
@@ -84,6 +91,12 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         answer4Btn = findViewById(R.id.answer4Btn);
         newsBtn = findViewById(R.id.newsBtn);
         mapsBtn = findViewById(R.id.mapsBtn);
+        nextQuestionBtn=findViewById(R.id.nextQuestionBtn);
+        hintBtn=findViewById(R.id.hintBtn);
+        currentScoreTv=findViewById(R.id.currentScoreTv);
+
+        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+        currentScoreTv.setText(getResources().getString(R.string.score)+currentScore);
 
         setQuestion();
 
@@ -129,6 +142,40 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        nextQuestionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setQuestion();
+            }
+        });
+
+        hintBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(numberOfHints==0 )
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
+                else{
+                    if( answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer1Btn.setEnabled(false);
+                        numberOfHints--;
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                    }else if(answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer2Btn.setEnabled(false);
+                        numberOfHints--;
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                    }else if(answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer3Btn.setEnabled(false);
+                        numberOfHints--;
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                    }else if(answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer4Btn.setEnabled(false);
+                        numberOfHints--;
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                    }
+                }
+
+            }
+        });
 
     }
 
@@ -156,13 +203,26 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
-                    Toast.makeText(CapitalCitiesActivity.this, "Tacan odgovor", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     newsBtn.setEnabled(true);
                     mapsBtn.setEnabled(true);
+                    nextQuestionBtn.setEnabled(true);
+                    hintBtn.setEnabled(false);
+                    currentScore++;
+                    currentScoreTv.setText(getResources().getString(R.string.score)+currentScore);
                 } else {
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
-                    Toast.makeText(CapitalCitiesActivity.this, "pogresan odgovor", Toast.LENGTH_LONG).show();
+                    hintBtn.setEnabled(false);
+                    if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    }else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    }else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    }else
+                        answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                 }
                 dialog.dismiss();
             }
@@ -180,7 +240,12 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private void setQuestion() {
         mapsBtn.setEnabled(false);
         newsBtn.setEnabled(false);
-        numOfQuestionTV.setText("0/"+numberOfQuestions);
+        nextQuestionBtn.setEnabled(false);
+        hintBtn.setEnabled(true);
+
+        numberOfCurrentQuestion++;
+        numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+
         LinkedList<Country> data = new LinkedList<>();
         Random ran = new Random();
         int i;
@@ -193,12 +258,14 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         currentCountry = data.get(0);//prva zemlja ce biti za pitanje
         LinkedList<String> answers = new LinkedList<>();
         for (Country c : data) {
+
             answers.add(selectedLanguage.equals("en") ? c.getCapitalCityEn() : c.getCapitalCitySr());
         }
         String country = null;
 
         if (selectedLanguage.equals("en")) {
             country = currentCountry.getNameEn();
+
         } else {
             country = currentCountry.getNameSr();
         }
@@ -207,22 +274,31 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         answer1Btn.setText(answers.get(i));
         answers.remove(i);
         i = ran.nextInt(3);
+        answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+        answer1Btn.setEnabled(true);
         answer2Btn.setText(answers.get(i));
         answers.remove(i);
         i = ran.nextInt(2);
+        answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+        answer2Btn.setEnabled(true);
         answer3Btn.setText(answers.get(i));
         answers.remove(i);
-
+        answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+        answer3Btn.setEnabled(true);
         answer4Btn.setText(answers.get(0));
-
+        answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+        answer4Btn.setEnabled(true);
     }
 
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        selectedLanguage = sp.getString("LANGUAGE", "false");
-
+        selectedLanguage = sp.getString("LANGUAGE", "en");
+//        if(selectedLanguage.equals("false"))
+//            selectedLanguage="en";
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
         numberOfQuestions=Integer.parseInt(number);
+
+
 //        boolean chk_night = sp.getBoolean("NIGHT", false);
 //        if (chk_night) {
 //

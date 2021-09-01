@@ -41,14 +41,14 @@ public class StartScreenActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(StartScreenActivity.this, MainActivity.class);
                 startActivity(intent);
-
+                finish();
             }
         });
     }
 
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        selectedLanguage = sp.getString("LANGUAGE", "false");
+        selectedLanguage = sp.getString("LANGUAGE", "en");
     }
 
     public void setLocale() {
