@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
-        <activity android:name=".CountrySightsActivity"></activity>
+        <activity android:name=".games.NeighboringCountryActivity"></activity>
+        <activity android:name=".games.CountrySightsActivity" />
         <activity android:name=".CustomInfoWindowAdapter" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -37,7 +38,7 @@
         <activity android:name=".Preference" />
         <activity android:name=".NewsDetailsActivity" />
         <activity android:name=".NewsActivity" />
-        <activity android:name=".CapitalCitiesActivity" />
+        <activity android:name=".games.CapitalCitiesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".StartScreenActivity">
             <intent-filter>

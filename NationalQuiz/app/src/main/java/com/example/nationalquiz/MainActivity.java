@@ -10,6 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.nationalquiz.data_base.CountryDBHelper;
+import com.example.nationalquiz.data_base.CountryDBService;
+import com.example.nationalquiz.games.CapitalCitiesActivity;
+import com.example.nationalquiz.games.CountrySightsActivity;
+import com.example.nationalquiz.games.NeighboringCountryActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CountryDBHelper countryDBHelper = new CountryDBHelper(MainActivity.this);
+        CountryDBService.fillDadaBase(countryDBHelper, this);
 
         Log.i("kreiranje","main aktiviti");
 
@@ -79,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
         neighboringCountriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, NeighboringCountryActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
             }
         });
         Button sightsBtn=selectQuestionCategoryPopup.findViewById(R.id.sightsBtn);

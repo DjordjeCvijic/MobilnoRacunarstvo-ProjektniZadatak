@@ -1,4 +1,4 @@
-package com.example.nationalquiz;
+package com.example.nationalquiz.games;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nationalquiz.R;
 import com.example.nationalquiz.data_base.CountryDBHelper;
 import com.example.nationalquiz.data_base.CountryDBService;
 import com.example.nationalquiz.models.Country;
@@ -53,7 +54,7 @@ public class CountrySightsActivity extends AppCompatActivity {
 
 
         CountryDBHelper countryDBHelper = new CountryDBHelper(CountrySightsActivity.this);
-        CountryDBService.fillDadaBase(countryDBHelper, this);
+        //CountryDBService.fillDadaBase(countryDBHelper, this);
         countriesDataList = countryDBHelper.getCountries();
 
         loadSetting();

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".games.CountrySightsActivity">
-
+    tools:context=".games.NeighboringCountryActivity">
 
     <TextView
         android:id="@+id/numOfQuestionTv"
@@ -14,10 +13,11 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.048"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038" />
+
     <TextView
         android:id="@+id/currentScoreTv"
         android:layout_width="wrap_content"
@@ -30,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/numOfQuestionTv"
         app:layout_constraintVertical_bias="0.039" />
 
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
@@ -37,24 +38,14 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651">
-
-        <ImageView
-            android:id="@+id/imageHolderIv"
-            android:layout_width="350dp"
-            android:layout_height="200dp"
-            android:layout_marginBottom="10dp"
-
-            />
+        app:layout_constraintVertical_bias="0.535">
 
         <TextView
             android:id="@+id/questionTv"
-            android:layout_width="297dp"
+            android:layout_width="267dp"
             android:layout_height="64dp"
-            android:layout_gravity="center_horizontal"
             android:text="@string/capitalCitiesQuestion"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -102,14 +93,14 @@
 
         android:layout_width="59dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="20dp"
         android:background="@color/purple_700"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/newsBtn"
-        app:layout_constraintVertical_bias="0.801"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.847"
         app:srcCompat="@drawable/ic_hint" />
 
     <TextView
@@ -121,6 +112,8 @@
         app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/hintBtn"
+        android:textSize="20sp"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

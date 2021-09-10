@@ -11,13 +11,14 @@
     <string name="title_activity_maps">Map</string>
     <string name="capitalCitiesQuestion">Which of these cities is the capital city of  </string>
     <string name="countrySightsQuestion">Sights from the picture is from which country ?</string>
+    <string name="neighboringCountryQuestion">Which of these countries is neighboring  </string>
     <string name="language">Language</string>
     <string name="selectLanguage">Select language</string>
     <string name="settings">Settings</string>
     <string name="numberOfQuestions">Number of questions</string>
     <string name="enterNumberOfQuestions">Enter number of questions</string>
     <string name="questions">Questions</string>
-    <string name="question">Question: </string>
+    <string name="question">Question : </string>
     <string name="nextQuestion">Next question</string>
     <string name="noMoreHints">No more hints</string>
     <string name="hint">Hint :</string>
