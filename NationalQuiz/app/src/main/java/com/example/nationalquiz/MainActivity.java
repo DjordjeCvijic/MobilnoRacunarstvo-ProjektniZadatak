@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.example.nationalquiz.data_base.CountryDBHelper;
 import com.example.nationalquiz.data_base.CountryDBService;
 import com.example.nationalquiz.games.CapitalCitiesActivity;
+import com.example.nationalquiz.games.CountryFlagActivity;
 import com.example.nationalquiz.games.CountrySightsActivity;
 import com.example.nationalquiz.games.NeighboringCountryActivity;
 
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         countriesFlagsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CountryFlagActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
 
             }
         });

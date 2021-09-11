@@ -13,6 +13,7 @@
     <string name="capitalCitiesQuestion">Koji od ponudjenih gradova je glavni grad drzave </string>
     <string name="countrySightsQuestion">U kojoj od ponudjenih država se nalazi znamenitost sa slike ?</string>
     <string name="neighboringCountryQuestion">Koja od ponudjenih drazava granici sa drzavom </string>
+    <string name="countryFlagQuestion">Zastava koje drzave se nalazi na slici? (Iskoristiti ponudjena slova)</string>
     <string name="language">Jezik</string>
     <string name="selectLanguage">Izaberite jezik</string>
     <string name="settings">Podesavanja</string>

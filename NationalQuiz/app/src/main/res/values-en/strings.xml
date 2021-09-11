@@ -13,6 +13,7 @@
     <string name="capitalCitiesQuestion">Which of these cities is the capital city of </string>
     <string name="countrySightsQuestion">Sights from the picture is from which country ?</string>
     <string name="neighboringCountryQuestion">Which of these countries is neighboring  </string>
+    <string name="countryFlagQuestion">The flag of which country is in the picture? (Use the offered letters)</string>
     <string name="language">Language</string>
     <string name="selectLanguage">Select language </string>
     <string name="settings">Settings</string>
