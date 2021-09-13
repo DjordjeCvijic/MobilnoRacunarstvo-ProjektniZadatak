@@ -72,7 +72,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/answerTv"
+        android:id="@+id/answerEt"
         android:layout_width="236dp"
         android:layout_height="61dp"
         android:clickable="false"
@@ -105,10 +105,10 @@
         android:layout_height="43dp"
         android:layout_marginStart="2dp"
         android:background="@color/purple_700"
-        app:layout_constraintBottom_toBottomOf="@+id/answerTv"
+        app:layout_constraintBottom_toBottomOf="@+id/answerEt"
         app:layout_constraintEnd_toEndOf="@+id/lettersTv"
-        app:layout_constraintStart_toEndOf="@+id/answerTv"
-        app:layout_constraintTop_toTopOf="@+id/answerTv"
+        app:layout_constraintStart_toEndOf="@+id/answerEt"
+        app:layout_constraintTop_toTopOf="@+id/answerEt"
         app:srcCompat="@drawable/ic_enter_answer" />
 
     <TextView
@@ -124,15 +124,27 @@
 
     <Button
         android:id="@+id/nextQuestionBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
         android:text="@string/nextQuestion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageHolderIv"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/imageHolderIv"
-        app:layout_constraintTop_toBottomOf="@+id/answerTv"
+        app:layout_constraintTop_toBottomOf="@+id/answerEt"
         app:layout_constraintVertical_bias="0.417" />
+
+    <Button
+        android:id="@+id/endGameBtn"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="@string/endOfGame"
+        app:layout_constraintBottom_toBottomOf="@+id/nextQuestionBtn"
+        app:layout_constraintEnd_toEndOf="@+id/imageHolderIv"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageHolderIv"
+        app:layout_constraintTop_toTopOf="@+id/nextQuestionBtn"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

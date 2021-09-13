@@ -156,7 +156,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
                     Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    nextQuestionBtn.setEnabled(true);
+
                     hintBtn.setEnabled(false);
                     currentScore++;
                     currentScoreTv.setText(getResources().getString(R.string.score)+currentScore);
@@ -173,6 +173,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                     }else
                         answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                 }
+
                 dialog.dismiss();
             }
         });
@@ -187,54 +188,59 @@ public class NeighboringCountryActivity extends AppCompatActivity {
     }
 
     private void setQuestion() {
-        nextQuestionBtn.setEnabled(false);
-        hintBtn.setEnabled(true);
+        if(numberOfCurrentQuestion!=numberOfQuestions){
 
-        numberOfCurrentQuestion++;
-        numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+            hintBtn.setEnabled(true);
 
-        LinkedList<Country> data = new LinkedList<>();
-        Random ran = new Random();
-        int i;
-        //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
-        while (data.size() != 4) {
-            i = ran.nextInt(20);
-            if (!data.contains(countriesDataList.get(i)))
-                data.add(countriesDataList.get(i));
+            numberOfCurrentQuestion++;
+            numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+
+            LinkedList<Country> data = new LinkedList<>();
+            Random ran = new Random();
+            int i;
+            //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
+            while (data.size() != 4) {
+                i = ran.nextInt(20);
+                if (!data.contains(countriesDataList.get(i)))
+                    data.add(countriesDataList.get(i));
+            }
+            currentCountry = data.remove(0);//prva zemlja ce biti za pitanje
+            LinkedList<String> answers = new LinkedList<>();
+            answers.add(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr());
+            for (Country c : data) {
+                answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
+            }
+            String country = null;
+
+            if (selectedLanguage.equals("en")) {
+                country = currentCountry.getNameEn();
+
+            } else {
+                country = currentCountry.getNameSr();
+            }
+            questionTv.setText(getResources().getString(R.string.neighboringCountryQuestion) + " " + country + " ?");
+            i = ran.nextInt(4);
+            answer1Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(3);
+            answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer1Btn.setEnabled(true);
+            answer2Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(2);
+            answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer2Btn.setEnabled(true);
+            answer3Btn.setText(answers.get(i));
+            answers.remove(i);
+            answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer3Btn.setEnabled(true);
+            answer4Btn.setText(answers.get(0));
+            answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer4Btn.setEnabled(true);
+        }else{
+            Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
-        currentCountry = data.remove(0);//prva zemlja ce biti za pitanje
-        LinkedList<String> answers = new LinkedList<>();
-        answers.add(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr());
-        for (Country c : data) {
-            answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
-        }
-        String country = null;
 
-        if (selectedLanguage.equals("en")) {
-            country = currentCountry.getNameEn();
-
-        } else {
-            country = currentCountry.getNameSr();
-        }
-        questionTv.setText(getResources().getString(R.string.neighboringCountryQuestion) + " " + country + " ?");
-        i = ran.nextInt(4);
-        answer1Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(3);
-        answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer1Btn.setEnabled(true);
-        answer2Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(2);
-        answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer2Btn.setEnabled(true);
-        answer3Btn.setText(answers.get(i));
-        answers.remove(i);
-        answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer3Btn.setEnabled(true);
-        answer4Btn.setText(answers.get(0));
-        answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer4Btn.setEnabled(true);
     }
 
 

@@ -23,7 +23,11 @@
     <string name="nextQuestion">Next question</string>
     <string name="noMoreHints">No more hints</string>
     <string name="hint">Hint :</string>
-    <string name="correctAnswer">Answer is correct</string>
-    <string name="incorrectAnswer">Answer is not correct</string>
+    <string name="correctAnswer"> Correct answer</string>
+    <string name="incorrectAnswer">Incorrect answer</string>
     <string name="score">Current score :</string>
+    <string name="thisIsLastQuestion">This is last question.</string>
+    <string name="endOfGame">End of game</string>
+    <string name="name">Name</string>
+    <string name="save">Save</string>
 </resources>

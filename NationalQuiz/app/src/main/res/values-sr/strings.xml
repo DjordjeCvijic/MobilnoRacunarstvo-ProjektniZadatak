@@ -27,5 +27,9 @@
     <string name="correctAnswer">Odgovor je tacan</string>
     <string name="incorrectAnswer">Odgovor nije tacan</string>
     <string name="score">Trenutni rezultat : </string>
+    <string name="thisIsLastQuestion">Ovo je posljednje pitanje.</string>
+    <string name="endOfGame">Kraj igre</string>
+    <string name="name">Ime</string>
+    <string name="save">Sacuvaj</string>
 
 </resources>

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         final View selectQuestionCategoryPopup = inflater.inflate(R.layout.select_question_category_popup, null);
 
-        Button capitalCitiesBtn=selectQuestionCategoryPopup.findViewById(R.id.capitalCitiesBtn);
+
 
 
 
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
         dialog.show();
 
+        Button capitalCitiesBtn=selectQuestionCategoryPopup.findViewById(R.id.capitalCitiesBtn);
         capitalCitiesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

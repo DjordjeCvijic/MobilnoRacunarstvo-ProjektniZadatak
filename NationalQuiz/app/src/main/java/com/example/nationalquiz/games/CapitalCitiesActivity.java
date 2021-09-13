@@ -193,16 +193,15 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
-                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     newsBtn.setEnabled(true);
                     mapsBtn.setEnabled(true);
-                    nextQuestionBtn.setEnabled(true);
                     hintBtn.setEnabled(false);
                     currentScore++;
                     currentScoreTv.setText(getResources().getString(R.string.score)+currentScore);
                 } else {
-                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
                     hintBtn.setEnabled(false);
                     if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
@@ -228,56 +227,61 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     }
 
     private void setQuestion() {
-        mapsBtn.setEnabled(false);
-        newsBtn.setEnabled(false);
-        nextQuestionBtn.setEnabled(false);
-        hintBtn.setEnabled(true);
+        if(numberOfCurrentQuestion!=numberOfQuestions){
+            mapsBtn.setEnabled(false);
+            newsBtn.setEnabled(false);
 
-        numberOfCurrentQuestion++;
-        numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+            hintBtn.setEnabled(true);
 
-        LinkedList<Country> data = new LinkedList<>();
-        Random ran = new Random();
-        int i;
-        //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
-        while (data.size() != 4) {
-            i = ran.nextInt(20);
-            if (!data.contains(countriesDataList.get(i)))
-                data.add(countriesDataList.get(i));
+            numberOfCurrentQuestion++;
+            numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+
+            LinkedList<Country> data = new LinkedList<>();
+            Random ran = new Random();
+            int i;
+            //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
+            while (data.size() != 4) {
+                i = ran.nextInt(20);
+                if (!data.contains(countriesDataList.get(i)))
+                    data.add(countriesDataList.get(i));
+            }
+            currentCountry = data.get(0);//prva zemlja ce biti za pitanje
+            LinkedList<String> answers = new LinkedList<>();
+            for (Country c : data) {
+
+                answers.add(selectedLanguage.equals("en") ? c.getCapitalCityEn() : c.getCapitalCitySr());
+            }
+            String country = null;
+
+            if (selectedLanguage.equals("en")) {
+                country = currentCountry.getNameEn();
+
+            } else {
+                country = currentCountry.getNameSr();
+            }
+            questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) + " " + country + " ?");
+            i = ran.nextInt(4);
+            answer1Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(3);
+            answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer1Btn.setEnabled(true);
+            answer2Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(2);
+            answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer2Btn.setEnabled(true);
+            answer3Btn.setText(answers.get(i));
+            answers.remove(i);
+            answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer3Btn.setEnabled(true);
+            answer4Btn.setText(answers.get(0));
+            answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer4Btn.setEnabled(true);
+        }else{
+            Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
-        currentCountry = data.get(0);//prva zemlja ce biti za pitanje
-        LinkedList<String> answers = new LinkedList<>();
-        for (Country c : data) {
 
-            answers.add(selectedLanguage.equals("en") ? c.getCapitalCityEn() : c.getCapitalCitySr());
-        }
-        String country = null;
-
-        if (selectedLanguage.equals("en")) {
-            country = currentCountry.getNameEn();
-
-        } else {
-            country = currentCountry.getNameSr();
-        }
-        questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) + " " + country + " ?");
-        i = ran.nextInt(4);
-        answer1Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(3);
-        answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer1Btn.setEnabled(true);
-        answer2Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(2);
-        answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer2Btn.setEnabled(true);
-        answer3Btn.setText(answers.get(i));
-        answers.remove(i);
-        answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer3Btn.setEnabled(true);
-        answer4Btn.setText(answers.get(0));
-        answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer4Btn.setEnabled(true);
     }
 
     private void loadSetting() {

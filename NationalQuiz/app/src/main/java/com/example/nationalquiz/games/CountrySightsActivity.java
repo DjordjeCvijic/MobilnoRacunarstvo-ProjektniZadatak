@@ -201,45 +201,50 @@ public class CountrySightsActivity extends AppCompatActivity {
     }
 
     private void setQuestion() {
-        numberOfCurrentQuestion++;
-        numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
+        if(numberOfCurrentQuestion!=numberOfQuestions){
+            numberOfCurrentQuestion++;
+            numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
 
-        nextQuestionBtn.setEnabled(false);
-        hintBtn.setEnabled(true);
 
-        LinkedList<Country> data = new LinkedList<>();
-        Random ran = new Random();
-        int i;
-        //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
-        while (data.size() != 4) {
-            i = ran.nextInt(20);
-            if (!data.contains(countriesDataList.get(i)))
-                data.add(countriesDataList.get(i));
+            hintBtn.setEnabled(true);
+
+            LinkedList<Country> data = new LinkedList<>();
+            Random ran = new Random();
+            int i;
+            //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
+            while (data.size() != 4) {
+                i = ran.nextInt(20);
+                if (!data.contains(countriesDataList.get(i)))
+                    data.add(countriesDataList.get(i));
+            }
+            currentCountry = data.get(0);//prva zemlja ce biti za pitanje
+            imageHolderIv.setImageResource(getResources().getIdentifier(currentCountry.getLandmarkImage(), "drawable", getPackageName()));
+
+            LinkedList<String> answers = new LinkedList<>();
+            for (Country c : data) {
+                answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
+            }
+            i = ran.nextInt(4);
+            answer1Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(3);
+            answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer1Btn.setEnabled(true);
+            answer2Btn.setText(answers.get(i));
+            answers.remove(i);
+            i = ran.nextInt(2);
+            answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer2Btn.setEnabled(true);
+            answer3Btn.setText(answers.get(i));
+            answers.remove(i);
+            answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer3Btn.setEnabled(true);
+            answer4Btn.setText(answers.get(0));
+            answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer4Btn.setEnabled(true);
+        }else{
+            Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
-        currentCountry = data.get(0);//prva zemlja ce biti za pitanje
-        imageHolderIv.setImageResource(getResources().getIdentifier(currentCountry.getLandmarkImage(), "drawable", getPackageName()));
 
-        LinkedList<String> answers = new LinkedList<>();
-        for (Country c : data) {
-            answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
-        }
-        i = ran.nextInt(4);
-        answer1Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(3);
-        answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer1Btn.setEnabled(true);
-        answer2Btn.setText(answers.get(i));
-        answers.remove(i);
-        i = ran.nextInt(2);
-        answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer2Btn.setEnabled(true);
-        answer3Btn.setText(answers.get(i));
-        answers.remove(i);
-        answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer3Btn.setEnabled(true);
-        answer4Btn.setText(answers.get(0));
-        answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
-        answer4Btn.setEnabled(true);
     }
 }
