@@ -1,14 +1,17 @@
 package com.example.nationalquiz.games;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,9 +19,12 @@ import android.widget.Toast;
 
 import com.example.nationalquiz.R;
 import com.example.nationalquiz.data_base.CountryDBHelper;
-import com.example.nationalquiz.data_base.CountryDBService;
+import com.example.nationalquiz.models.Answer;
 import com.example.nationalquiz.models.Country;
+import com.example.nationalquiz.models.GameResult;
+import com.example.nationalquiz.services.GameResultService;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -32,10 +38,12 @@ public class CountrySightsActivity extends AppCompatActivity {
     private int numberOfCurrentQuestion = 0;
     private int numberOfHints = 3;
     private int currentScore = 0;
+    private GameResult gameResult=new GameResult();
 
 
     private ImageView imageHolderIv;
     private Button nextQuestionBtn;
+    private Button endGameBtn;
     private Button answer1Btn;
     private Button answer2Btn;
     private Button answer3Btn;
@@ -65,6 +73,7 @@ public class CountrySightsActivity extends AppCompatActivity {
         numberOfHintsTv = findViewById(R.id.hintNumberTv);
         currentScoreTv = findViewById(R.id.currentScoreTv);
         nextQuestionBtn = findViewById(R.id.nextQuestionBtn);
+        endGameBtn = findViewById(R.id.endGameBtn);
         answer1Btn = findViewById(R.id.answer1Btn);
         answer2Btn = findViewById(R.id.answer2Btn);
         answer3Btn = findViewById(R.id.answer3Btn);
@@ -75,7 +84,7 @@ public class CountrySightsActivity extends AppCompatActivity {
         questionTv.setText(getResources().getString(R.string.countrySightsQuestion));
 
         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
-        currentScoreTv.setText(getResources().getString(R.string.score) + currentScore);
+        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
 
         setQuestion();
 
@@ -132,6 +141,59 @@ public class CountrySightsActivity extends AppCompatActivity {
 
             }
         });
+        endGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialogBuilder;
+                AlertDialog dialog;
+                dialogBuilder = new AlertDialog.Builder(CountrySightsActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
+                LayoutInflater inflater = LayoutInflater.from(CountrySightsActivity.this);
+                final View saveResultPopup = inflater.inflate(R.layout.save_result_popup, null);
+
+                dialogBuilder.setView(saveResultPopup);
+                dialog = dialogBuilder.create();
+                dialog.show();
+
+                TextView finalResultTv;
+                Button saveBtn;
+                Button cancelBtn;
+                EditText playerNameEt;
+
+                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
+                saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
+                cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
+
+                finalResultTv.setText(getResources().getString(R.string.finalScore) + currentScore);
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        LocalDateTime dateTime=LocalDateTime.now();
+                        String playerName=playerNameEt.getText().toString();
+                        String score=currentScore+"/"+numberOfQuestions;
+                        gameResult.setDate(dateTime.toString());
+                        gameResult.setPlayerName(playerName);
+                        gameResult.setScore(score);
+
+                        GameResultService.writeGameResult(gameResult,CountrySightsActivity.this);
+
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
+
+
+            }
+        });
     }
 
     private void checkAnswer(View v) {
@@ -157,18 +219,20 @@ public class CountrySightsActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answer answer=new Answer(questionTv.getText().toString(),selectedAnswer,currentCountry.getLandmarkImage());
+
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                     Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
 
-                    nextQuestionBtn.setEnabled(true);
-                    hintBtn.setEnabled(false);
+
+
                     currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.score) + currentScore);
+                    currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                 } else {
                     Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
-                    hintBtn.setEnabled(false);
+
                     if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                         answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
@@ -178,6 +242,9 @@ public class CountrySightsActivity extends AppCompatActivity {
                     } else
                         answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                 }
+                nextQuestionBtn.setEnabled(true);
+                hintBtn.setEnabled(false);
+                gameResult.addAnswer(answer);
                 dialog.dismiss();
             }
         });

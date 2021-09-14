@@ -26,10 +26,11 @@
     <string name="hint">Pomoc : </string>
     <string name="correctAnswer">Odgovor je tacan</string>
     <string name="incorrectAnswer">Odgovor nije tacan</string>
-    <string name="score">Trenutni rezultat : </string>
+    <string name="currentScore">Trenutni rezultat :</string>
+    <string name="finalScore">Konacan rezultat: </string>
     <string name="thisIsLastQuestion">Ovo je posljednje pitanje.</string>
     <string name="endOfGame">Kraj igre</string>
-    <string name="name">Ime</string>
+    <string name="name">Ime igraca :</string>
     <string name="save">Sacuvaj</string>
-
+    <string name="gameHistory">Istorija igranja</string>
 </resources>

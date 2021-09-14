@@ -19,15 +19,21 @@
 
         <Button
             android:id="@+id/startGameBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="247dp"
+            android:layout_height="78dp"
             android:text="@string/startGame"/>
 
         <Button
             android:id="@+id/settingsBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="247dp"
+            android:layout_height="78dp"
             android:text="@string/settings" />
+
+        <Button
+            android:id="@+id/gameHistoryBtn"
+            android:layout_width="247dp"
+            android:layout_height="78dp"
+            android:text="@string/gameHistory" />
 
     </LinearLayout>
 

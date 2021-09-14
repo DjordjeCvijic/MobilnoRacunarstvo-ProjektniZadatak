@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.nationalquiz.NewsDetailsActivity;
 import com.example.nationalquiz.R;
 import com.example.nationalquiz.models.Articles;
 import com.squareup.picasso.Picasso;

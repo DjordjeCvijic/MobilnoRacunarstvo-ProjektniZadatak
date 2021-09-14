@@ -1,10 +1,12 @@
 package com.example.nationalquiz.games;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -17,11 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nationalquiz.MainActivity;
 import com.example.nationalquiz.R;
 import com.example.nationalquiz.data_base.CountryDBHelper;
+import com.example.nationalquiz.models.Answer;
 import com.example.nationalquiz.models.Country;
+import com.example.nationalquiz.models.GameResult;
+import com.example.nationalquiz.services.GameResultService;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -33,6 +38,8 @@ public class CountryFlagActivity extends AppCompatActivity {
     private int numberOfCurrentQuestion;
     private int numberOfHints = 3;
     private int currentScore = 0;
+    private GameResult gameResult=new GameResult();
+
     private Button nextQuestionBtn;
     private Button endGameBtn;
     private ImageButton hintBtn;
@@ -41,8 +48,10 @@ public class CountryFlagActivity extends AppCompatActivity {
     private TextView numberOfHintsTv;
     private TextView currentScoreTv;
     private TextView lettersTv;
+    private TextView questionTv;
     private EditText answerEt;
     private ImageView imageHolderIv;
+
 
 
     public static Country currentCountry;
@@ -62,16 +71,17 @@ public class CountryFlagActivity extends AppCompatActivity {
         numOfQuestionTv = findViewById(R.id.numOfQuestionTv);
         numberOfHintsTv = findViewById(R.id.hintNumberTv);
         nextQuestionBtn = findViewById(R.id.nextQuestionBtn);
-        endGameBtn=findViewById(R.id.endGameBtn);
+        endGameBtn = findViewById(R.id.endGameBtn);
         enterAnswerBtn = findViewById(R.id.enterAnswerBtn);
         hintBtn = findViewById(R.id.hintBtn);
         currentScoreTv = findViewById(R.id.currentScoreTv);
         lettersTv = findViewById(R.id.lettersTv);
+        questionTv=findViewById(R.id.questionTv);
         imageHolderIv = findViewById(R.id.imageHolderIv);
         answerEt = findViewById(R.id.answerEt);
 
         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
-        currentScoreTv.setText(getResources().getString(R.string.score) + currentScore);
+        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
 
         setQuestion();
 
@@ -91,7 +101,7 @@ public class CountryFlagActivity extends AppCompatActivity {
 
                     String currentText = answerEt.getText().toString();
                     char nextLetter = (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase().toLowerCase()).charAt(currentText.length());
-                    String newText=currentText.concat(String.valueOf(nextLetter));
+                    String newText = currentText.concat(String.valueOf(nextLetter));
                     answerEt.setText(newText);
                     numberOfHints--;
                     numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
@@ -102,21 +112,24 @@ public class CountryFlagActivity extends AppCompatActivity {
         enterAnswerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Answer answer=new Answer(questionTv.getText().toString(),answerEt.getText().toString().toLowerCase(),currentCountry.getFlagImage());
                 if (answerEt.getText().toString().toLowerCase().equals(
                         (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase()).toLowerCase())) {
                     Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                     currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.score) + currentScore);
+                    currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                     enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    answer.setCorrect(true);
                 } else {
                     Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
                     enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.red, null));
+                    answer.setCorrect(false);
                 }
                 nextQuestionBtn.setEnabled(true);
                 hintBtn.setEnabled(false);
                 enterAnswerBtn.setEnabled(false);
                 closeKeyboard();
-
+                gameResult.addAnswer(answer);
             }
         });
 
@@ -127,20 +140,60 @@ public class CountryFlagActivity extends AppCompatActivity {
                 AlertDialog dialog;
                 dialogBuilder = new AlertDialog.Builder(CountryFlagActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
                 LayoutInflater inflater = LayoutInflater.from(CountryFlagActivity.this);
-                final View selectQuestionCategoryPopup = inflater.inflate(R.layout.select_question_category_popup, null);
+                final View saveResultPopup = inflater.inflate(R.layout.save_result_popup, null);
 
-                dialogBuilder.setView(selectQuestionCategoryPopup);
+                dialogBuilder.setView(saveResultPopup);
                 dialog = dialogBuilder.create();
                 dialog.show();
+
+                TextView finalResultTv;
+                Button saveBtn;
+                Button cancelBtn;
+                EditText playerNameEt;
+
+                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
+                saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
+                cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
+
+                finalResultTv.setText(getResources().getString(R.string.finalScore) + currentScore);
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        LocalDateTime dateTime=LocalDateTime.now();
+                        String playerName=playerNameEt.getText().toString();
+                        String score=currentScore+"/"+numberOfQuestions;
+                        gameResult.setDate(dateTime.toString());
+                        gameResult.setPlayerName(playerName);
+                        gameResult.setScore(score);
+
+                        GameResultService.writeGameResult(gameResult,CountryFlagActivity.this);
+
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                        //CountryFlagActivity.super.onBackPressed();
+                        dialog.dismiss();
+                    }
+                });
+
+
             }
         });
     }
 
     private void closeKeyboard() {
-        View view=this.getCurrentFocus();
-        if(view!=null){
-            InputMethodManager imm=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
@@ -163,9 +216,8 @@ public class CountryFlagActivity extends AppCompatActivity {
                 letters.add(String.valueOf(answer.charAt(i)));
 
             while (letters.size() < 20) {
-                char tmp=(char)(ran.nextInt(26) + 'a');
-                System.out.println( tmp);
-                letters.add(String.valueOf( tmp));
+                char tmp = (char) (ran.nextInt(26) + 'a');
+                letters.add(String.valueOf(tmp));
             }
             String lettersToShow = "";
             while (letters.size() != 0) {
@@ -188,4 +240,13 @@ public class CountryFlagActivity extends AppCompatActivity {
         numberOfQuestions = Integer.parseInt(number);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        endGameBtn.performClick();
+    }
+
+
+
+
 }

@@ -11,17 +11,19 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.nationalquiz.data_base.CountryDBHelper;
-import com.example.nationalquiz.data_base.CountryDBService;
+import com.example.nationalquiz.services.CountryDBService;
 import com.example.nationalquiz.games.CapitalCitiesActivity;
 import com.example.nationalquiz.games.CountryFlagActivity;
 import com.example.nationalquiz.games.CountrySightsActivity;
 import com.example.nationalquiz.games.NeighboringCountryActivity;
+import com.example.nationalquiz.services.GameResultService;
 
 
 public class MainActivity extends AppCompatActivity {
 
     Button startGameBtn;
     Button settingsBtn;
+    Button gameHistoryBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this,Preference.class);
                 startActivity(i);
+            }
+        });
+
+        gameHistoryBtn=findViewById(R.id.gameHistoryBtn);
+        gameHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String res= GameResultService.readGameResult(MainActivity.this);
+                Log.i("sadrzaj fajla",res);
             }
         });
 

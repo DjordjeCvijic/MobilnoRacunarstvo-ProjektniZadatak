@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
-        <activity android:name=".games.CountryFlagActivity"></activity>
+        <activity android:name=".game_result.GamesResultsActivity"></activity>
+        <activity android:name=".games.CountryFlagActivity" />
         <activity android:name=".games.NeighboringCountryActivity" />
         <activity android:name=".games.CountrySightsActivity" />
         <activity android:name=".CustomInfoWindowAdapter" />
@@ -37,8 +38,8 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".Preference" />
-        <activity android:name=".NewsDetailsActivity" />
-        <activity android:name=".NewsActivity" />
+        <activity android:name=".news.NewsDetailsActivity" />
+        <activity android:name=".news.NewsActivity" />
         <activity android:name=".games.CapitalCitiesActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".StartScreenActivity">

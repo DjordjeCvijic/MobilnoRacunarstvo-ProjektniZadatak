@@ -26,10 +26,11 @@
     <string name="hint">Hint :</string>
     <string name="correctAnswer"> Correct answer</string>
     <string name="incorrectAnswer">Incorrect answer</string>
-    <string name="score">Current score :</string>
+    <string name="currentScore">Current score :</string>
+    <string name="finalScore">Final score: </string>
     <string name="thisIsLastQuestion">This is last question.</string>
     <string name="endOfGame">End of game</string>
-    <string name="name">Name</string>
+    <string name="name">Player name :</string>
     <string name="save">Save</string>
-
+    <string name="gameHistory">Game history</string>
 </resources>

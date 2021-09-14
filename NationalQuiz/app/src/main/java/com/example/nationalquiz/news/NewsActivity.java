@@ -1,4 +1,4 @@
-package com.example.nationalquiz;
+package com.example.nationalquiz.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nationalquiz.R;
 import com.example.nationalquiz.models.Articles;
 import com.example.nationalquiz.models.Headlines;
-import com.example.nationalquiz.news.Adapter;
-import com.example.nationalquiz.news.ApiClient;
 
 import java.util.ArrayList;
 import java.util.List;

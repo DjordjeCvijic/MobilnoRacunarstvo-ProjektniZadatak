@@ -97,6 +97,18 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.502" />
 
+    <Button
+        android:id="@+id/endGameBtn"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:text="@string/endOfGame"
+        app:layout_constraintBottom_toBottomOf="@+id/nextQuestionBtn"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="@+id/nextQuestionBtn"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ImageButton
         android:id="@+id/hintBtn"
 
