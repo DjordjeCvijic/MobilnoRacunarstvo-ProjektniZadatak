@@ -53,6 +53,6 @@ public class Answer {
 
     @Override
     public String toString() {
-        return question+","+enteredAnswer+","+isCorrect+","+imageName;
+        return question+","+enteredAnswer+","+(isCorrect?1:0)+","+imageName;
     }
 }

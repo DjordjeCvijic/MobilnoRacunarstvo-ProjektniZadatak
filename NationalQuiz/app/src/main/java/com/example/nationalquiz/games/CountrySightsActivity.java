@@ -224,9 +224,7 @@ public class CountrySightsActivity extends AppCompatActivity {
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                     Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-
-
-
+                    answer.setCorrect(true);
                     currentScore++;
                     currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                 } else {
@@ -241,6 +239,7 @@ public class CountrySightsActivity extends AppCompatActivity {
                         answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     } else
                         answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                    answer.setCorrect(false);
                 }
                 nextQuestionBtn.setEnabled(true);
                 hintBtn.setEnabled(false);
@@ -313,5 +312,9 @@ public class CountrySightsActivity extends AppCompatActivity {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
 
+    }
+    @Override
+    public void onBackPressed() {
+        endGameBtn.performClick();
     }
 }

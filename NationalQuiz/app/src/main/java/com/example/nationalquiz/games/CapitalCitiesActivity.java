@@ -223,7 +223,6 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        //CountryFlagActivity.super.onBackPressed();
                         dialog.dismiss();
                     }
                 });
@@ -362,13 +361,16 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         numberOfQuestions=Integer.parseInt(number);
 
 
-//        boolean chk_night = sp.getBoolean("NIGHT", false);
-//        if (chk_night) {
-//
-//            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
-//        }
+        boolean newsCaching = sp.getBoolean("CACHING", false);
+        if (newsCaching) {
+            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        endGameBtn.performClick();
     }
 
 //    @Override

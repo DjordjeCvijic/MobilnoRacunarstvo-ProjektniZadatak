@@ -8,19 +8,19 @@
     android:background="@color/white"
     tools:context=".game_result.GamesResultsActivity">
 
-        <TextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NEWS"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         android:background="@color/white"
         android:padding="10dp"
-        android:textAlignment="center"/>
+        android:text="@string/gameHistory"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewForResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:id="@+id/recyclerViewForResult"/>
+        android:layout_marginTop="5dp" />
 </LinearLayout>

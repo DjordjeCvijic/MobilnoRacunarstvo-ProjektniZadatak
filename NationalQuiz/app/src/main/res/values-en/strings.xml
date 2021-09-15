@@ -33,4 +33,15 @@
     <string name="name">Player name :</string>
     <string name="save">Save</string>
     <string name="gameHistory">Game history</string>
+    <string name="share">Share</string>
+    <string name="details">Details</string>
+    <string name="gameDetails">Game details</string>
+    <string name="answer">Answer :</string>
+    <string name="newsCaching">News caching</string>
+    <string name="serbian">Serbian</string>
+    <string name="english">English</string>
+    <string name="cachingOn">News caching is on</string>
+    <string name="cachingOff">News caching is off</string>
+    <string name="caching">Caching</string>
+    <string name="news">News</string>
 </resources>

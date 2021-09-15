@@ -33,4 +33,15 @@
     <string name="name">Ime igraca :</string>
     <string name="save">Sacuvaj</string>
     <string name="gameHistory">Istorija igranja</string>
+    <string name="share">Podijeli</string>
+    <string name="details">Detalji</string>
+    <string name="gameDetails">Detalji igre</string>
+    <string name="answer">Odgovor :</string>
+    <string name="newsCaching">Kesiranje vijesti</string>
+    <string name="serbian">Srpski</string>
+    <string name="english">Engleski</string>
+    <string name="cachingOn">Kesiranje vijesti je ukljuceno</string>
+    <string name="cachingOff">Kesiranje vijesti je iskljuceno</string>
+    <string name="caching">Kesiranje</string>
+    <string name="news">Vijesti</string>
 </resources>

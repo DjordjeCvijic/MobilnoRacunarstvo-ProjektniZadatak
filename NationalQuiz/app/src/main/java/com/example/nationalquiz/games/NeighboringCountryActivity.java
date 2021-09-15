@@ -185,7 +185,6 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        //CountryFlagActivity.super.onBackPressed();
                         dialog.dismiss();
                     }
                 });
@@ -320,6 +319,10 @@ public class NeighboringCountryActivity extends AppCompatActivity {
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
         numberOfQuestions = Integer.parseInt(number);
 
+    }
+    @Override
+    public void onBackPressed() {
+        endGameBtn.performClick();
     }
 
 

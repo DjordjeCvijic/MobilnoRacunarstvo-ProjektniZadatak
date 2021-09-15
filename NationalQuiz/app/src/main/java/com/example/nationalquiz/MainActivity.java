@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.nationalquiz.data_base.CountryDBHelper;
+import com.example.nationalquiz.game_result.GamesResultsActivity;
 import com.example.nationalquiz.services.CountryDBService;
 import com.example.nationalquiz.games.CapitalCitiesActivity;
 import com.example.nationalquiz.games.CountryFlagActivity;
@@ -57,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         gameHistoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String res= GameResultService.readGameResult(MainActivity.this);
-                Log.i("sadrzaj fajla",res);
+                Intent intent = new Intent(MainActivity.this, GamesResultsActivity.class);
+                startActivity(intent);
             }
         });
 

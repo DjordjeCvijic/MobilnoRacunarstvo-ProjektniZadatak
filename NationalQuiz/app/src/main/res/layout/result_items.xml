@@ -26,8 +26,9 @@
                 android:drawablePadding="6dp"
                 android:gravity="left|center"
                 android:padding="6dp"
-                android:text="AndroidDhina"
+                android:text="@string/share"
                 android:textStyle="bold"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.923"
@@ -43,8 +44,10 @@
                 android:drawablePadding="6dp"
                 android:gravity="left|center"
                 android:padding="6dp"
-                android:text="AndroidDhina"
+                android:text="@string/details"
                 android:textStyle="bold"
+
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/shareGameResultBtn"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -76,7 +79,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/playerNameTv"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.300" />
+                app:layout_constraintVertical_bias="0.400" />
 
             <TextView
                 android:id="@+id/scoreTv"
@@ -89,7 +92,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/dateTv"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.600" />
+                app:layout_constraintVertical_bias="0.700" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

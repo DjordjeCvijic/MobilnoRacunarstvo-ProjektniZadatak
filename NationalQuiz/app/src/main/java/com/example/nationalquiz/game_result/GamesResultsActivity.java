@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.nationalquiz.R;
 import com.example.nationalquiz.models.GameResult;
@@ -37,11 +38,12 @@ public class GamesResultsActivity extends AppCompatActivity {
 
     private void getGamesResultsFromFile() {
 
-        gameResultList= GameResultService.getGamesResultsFromFile();
+        gameResultList= GameResultService.getGamesResultsFromFile(GamesResultsActivity.this);
 
 
         gamesResultsAdapter=new GamesResultsAdapter(GamesResultsActivity.this,gameResultList);
         recyclerView.setAdapter(gamesResultsAdapter);
         gamesResultsAdapter.notifyDataSetChanged();
+
     }
 }

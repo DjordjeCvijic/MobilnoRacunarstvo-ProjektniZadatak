@@ -241,10 +241,10 @@ public class CountryFlagActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        endGameBtn.performClick();
-    }
+        @Override
+        public void onBackPressed() {
+            endGameBtn.performClick();
+        }
 
 
 

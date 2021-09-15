@@ -34,7 +34,7 @@ public class Preference extends PreferenceActivity {
             //Toast.makeText(this, "nocni mod load of", Toast.LENGTH_SHORT).show();
         }
         //ovo je za postavljanje listener-a za promjenu
-        CheckBoxPreference checkBoxPreference_instant = (CheckBoxPreference) findPreference("NIGHT");
+        CheckBoxPreference checkBoxPreference_instant = (CheckBoxPreference) findPreference("CACHING");
         checkBoxPreference_instant.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference prefs, Object obj) {
@@ -79,8 +79,7 @@ public class Preference extends PreferenceActivity {
                     setLocale(item);
                     finish();
                     startActivity(getIntent());
-//                    setPreferenceScreen(null);
-//                    addPreferencesFromResource(R.xml.prefs);  radi ali ne ispise ispod izabran jezik
+
                 }
                 return true;
             }
