@@ -44,4 +44,5 @@
     <string name="cachingOff">Kesiranje vijesti je iskljuceno</string>
     <string name="caching">Kesiranje</string>
     <string name="news">Vijesti</string>
+    <string name="noInternetConnection">Nema internet konekcije</string>
 </resources>

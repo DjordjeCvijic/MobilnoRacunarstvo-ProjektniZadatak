@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -29,10 +30,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     Context context;
     List<Articles> articles;
+    private boolean connection;
 
-    public Adapter(Context context, List<Articles> articles) {
+    public Adapter(Context context, List<Articles> articles,boolean connection) {
         this.context = context;
         this.articles = articles;
+        this.connection=connection;
     }
 
     @NonNull
@@ -49,26 +52,36 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.tvSource.setText(a.getSource().getName());
         holder.tvDate.setText(dateTime(a.getPublishedAt()));
 
+        if(connection){
+            String imageUrl=a.getUrlToImage();
+            String url=a.getUrl();
+            Picasso.with(context).load(imageUrl).into(holder.imageView);
 
-        String imageUrl=a.getUrlToImage();
-        String url=a.getUrl();
-        Picasso.with(context).load(imageUrl).into(holder.imageView);
+            //Log.i("clanak: ",a.toString());
 
-        Log.i("clanak: ",a.toString());
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("Drzava", a.getPublishedAt());
+                    Intent intent=new Intent(context, NewsDetailsActivity.class);
+                    intent.putExtra("title",a.getTitle());
+                    intent.putExtra("source",a.getSource().getName());
+                    intent.putExtra("time",dateTime(a.getPublishedAt()));
+                    intent.putExtra("desc",a.getDescription());
+                    intent.putExtra("imageUrl",a.getUrlToImage());
+                    intent.putExtra("url",a.getUrl());
+                    context.startActivity(intent);
+                }
+            });
+        }else{
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, context.getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context, NewsDetailsActivity.class);
-                intent.putExtra("title",a.getTitle());
-                intent.putExtra("source",a.getSource().getName());
-                intent.putExtra("time",dateTime(a.getPublishedAt()));
-                intent.putExtra("desc",a.getDescription());
-                intent.putExtra("imageUrl",a.getUrlToImage());
-                intent.putExtra("url",a.getUrl());
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override

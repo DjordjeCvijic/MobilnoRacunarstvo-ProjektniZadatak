@@ -4,8 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,9 +40,10 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private String selectedLanguage;
     private int numberOfQuestions;
     private int numberOfCurrentQuestion;
-    private int numberOfHints=3;
-    private int currentScore=0;
-    private GameResult gameResult=new GameResult();
+    private int numberOfHints = 3;
+    private int currentScore = 0;
+    boolean newsCaching;
+    private GameResult gameResult = new GameResult();
 
     private TextView questionTv;
     private Button answer1Btn;
@@ -76,13 +80,13 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 //                });
 
         CountryDBHelper countryDBHelper = new CountryDBHelper(CapitalCitiesActivity.this);
-       // CountryDBService.fillDadaBase(countryDBHelper, this);
+        // CountryDBService.fillDadaBase(countryDBHelper, this);
         countriesDataList = countryDBHelper.getCountries();
 
         loadSetting();
 
-        numOfQuestionTv=findViewById(R.id.numOfQuestionTv);
-        numberOfHintsTv=findViewById(R.id.hintNumberTv);
+        numOfQuestionTv = findViewById(R.id.numOfQuestionTv);
+        numberOfHintsTv = findViewById(R.id.hintNumberTv);
         questionTv = findViewById(R.id.questionTv);
         answer1Btn = findViewById(R.id.answer1Btn);
         answer2Btn = findViewById(R.id.answer2Btn);
@@ -91,12 +95,12 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         newsBtn = findViewById(R.id.newsBtn);
         endGameBtn = findViewById(R.id.endGameBtn);
         mapsBtn = findViewById(R.id.mapsBtn);
-        nextQuestionBtn=findViewById(R.id.nextQuestionBtn);
-        hintBtn=findViewById(R.id.hintBtn);
-        currentScoreTv=findViewById(R.id.currentScoreTv);
+        nextQuestionBtn = findViewById(R.id.nextQuestionBtn);
+        hintBtn = findViewById(R.id.hintBtn);
+        currentScoreTv = findViewById(R.id.currentScoreTv);
 
-        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-        currentScoreTv.setText(getResources().getString(R.string.currentScore)+currentScore);
+        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
 
         setQuestion();
 
@@ -131,7 +135,11 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CapitalCitiesActivity.this, NewsActivity.class);
                 intent.putExtra("country", currentCountry.getMark());
+                intent.putExtra("internet", internetIsConnected() );
+                intent.putExtra("caching", newsCaching);
                 startActivity(intent);
+
+
             }
         });
 
@@ -152,25 +160,25 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         hintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(numberOfHints==0 )
+                if (numberOfHints == 0)
                     Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
-                else{
-                    if( answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                else {
+                    if (answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer1Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer2Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer3Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer4Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
                     }
                 }
 
@@ -195,7 +203,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                 Button cancelBtn;
                 EditText playerNameEt;
 
-                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                playerNameEt = saveResultPopup.findViewById(R.id.enteredNameEt);
                 finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
                 saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
                 cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
@@ -206,14 +214,14 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(View v) {
-                        LocalDateTime dateTime=LocalDateTime.now();
-                        String playerName=playerNameEt.getText().toString();
-                        String score=currentScore+"/"+numberOfQuestions;
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        String playerName = playerNameEt.getText().toString();
+                        String score = currentScore + "/" + numberOfQuestions;
                         gameResult.setDate(dateTime.toString());
                         gameResult.setPlayerName(playerName);
                         gameResult.setScore(score);
 
-                        GameResultService.writeGameResult(gameResult,CapitalCitiesActivity.this);
+                        GameResultService.writeGameResult(gameResult, CapitalCitiesActivity.this);
                         GameResultService.readGameResult(CapitalCitiesActivity.this);
                         dialog.dismiss();
                         finish();
@@ -256,7 +264,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         yesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Answer answer=new Answer(questionTv.getText().toString(),selectedAnswer,null);
+                Answer answer = new Answer(questionTv.getText().toString(), selectedAnswer, null);
                 if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                     Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.green, null));
@@ -264,19 +272,19 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                     mapsBtn.setEnabled(true);
                     hintBtn.setEnabled(false);
                     currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.currentScore)+currentScore);
+                    currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                     answer.setCorrect(true);
                 } else {
                     Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
                     btn.setBackgroundColor(getResources().getColor(R.color.red, null));
                     hintBtn.setEnabled(false);
-                    if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                    if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                    } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())){
+                    } else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                         answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else
+                    } else
                         answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                     answer.setCorrect(false);
                 }
@@ -295,14 +303,14 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     }
 
     private void setQuestion() {
-        if(numberOfCurrentQuestion!=numberOfQuestions){
+        if (numberOfCurrentQuestion != numberOfQuestions) {
             mapsBtn.setEnabled(false);
             newsBtn.setEnabled(false);
 
             hintBtn.setEnabled(true);
 
             numberOfCurrentQuestion++;
-            numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+            numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
 
             LinkedList<Country> data = new LinkedList<>();
             Random ran = new Random();
@@ -346,7 +354,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             answer4Btn.setText(answers.get(0));
             answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
             answer4Btn.setEnabled(true);
-        }else{
+        } else {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
 
@@ -355,77 +363,35 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         selectedLanguage = sp.getString("LANGUAGE", "en");
-//        if(selectedLanguage.equals("false"))
-//            selectedLanguage="en";
+
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
-        numberOfQuestions=Integer.parseInt(number);
+        numberOfQuestions = Integer.parseInt(number);
 
 
-        boolean newsCaching = sp.getBoolean("CACHING", false);
-        if (newsCaching) {
-            Toast.makeText(this, "nocni mod  on", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "nocni mod  off", Toast.LENGTH_SHORT).show();
-        }
+         newsCaching = sp.getBoolean("CACHING", false);
     }
+
     @Override
     public void onBackPressed() {
         endGameBtn.performClick();
     }
 
-//    @Override
-//    protected void onResume() {
-//        loadSetting();
-//        super.onResume();
-    //  }
-
-    private void prikaziSliku() {
-//        ImageView imageView=findViewById(R.id.imageHolder);
-//        Button button=findViewById(R.id.switchImageBtn);
-//
-//        String imgname=countriesDataList.get(imageToShow).getFlagImage();
-//        imageToShow++;
-//        int resID = getResources().getIdentifier(imgname , "drawable", getPackageName());
-//        Drawable drawable = getResources().getDrawable(resID); //<----line with error
-//        imageView.setImageDrawable(drawable);
-//
-//        Log.i("Baza","broj listi"+countriesDataList.size());
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String imgname=countriesDataList.get(imageToShow).getFlagImage();
-//                Log.i("slika: ",imgname);
-//                int resID = getResources().getIdentifier(imgname , "drawable", getPackageName());
-//                Drawable drawable = getDrawable(resID);
-//
-//                imageView.setImageDrawable(drawable);
-//
-//                imageToShow=(imageToShow+1)%20;
-//
-//                viewModel.doAction("novo");
+    private boolean internetIsConnected() {
+        boolean connected = false;
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            // connected to the internet
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                connected = true;
+            }
+//            else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+//                connected = true;
 //            }
-//        });
-//        <ImageView
-//        android:id="@+id/imageHolder"
-//        android:layout_width="238dp"
-//        android:layout_height="207dp"
-//        app:layout_constraintBottom_toBottomOf="parent"
-//        app:layout_constraintEnd_toEndOf="parent"
-//        app:layout_constraintHorizontal_bias="0.497"
-//        app:layout_constraintStart_toStartOf="parent"
-//        app:layout_constraintTop_toTopOf="parent"
-//        app:layout_constraintVertical_bias="0.112" />
-//
-//    <Button
-//        android:id="@+id/switchImageBtn"
-//        android:text="Sledeca slika"
-//        android:layout_width="144dp"
-//        android:layout_height="63dp"
-//        app:layout_constraintBottom_toBottomOf="parent"
-//        app:layout_constraintEnd_toEndOf="parent"
-//        app:layout_constraintStart_toStartOf="parent"
-//        app:layout_constraintTop_toBottomOf="@+id/imageHolder" />
+        }
+        return connected;
+
     }
+
 
 }

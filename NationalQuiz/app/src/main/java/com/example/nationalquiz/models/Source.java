@@ -17,6 +17,10 @@ public class Source {
         name=string;
     }
 
+    public Source() {
+
+    }
+
     public String getId() {
         return id;
     }
