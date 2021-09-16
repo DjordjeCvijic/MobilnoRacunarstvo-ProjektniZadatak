@@ -23,10 +23,9 @@ public class NewsService {
             FileOutputStream fileout = context.openFileOutput(fileName, context.MODE_APPEND);//treba . txt
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             for (Articles articles : articlesList) {
-                outputWriter.append("#" + countryMark+","+articles.getTitle()+","+articles.getSource()+","+articles.getPublishedAt());
-                outputWriter.close();
+                outputWriter.append("$" + countryMark+"##"+articles.getTitle()+"##"+articles.getSource().getName()+"##"+articles.getPublishedAt());
             }
-
+            outputWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,6 +52,7 @@ public class NewsService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d("kes", result);
         return result;
     }
     public static List<Articles> getNewsCacheFromFileForCountry(Context context,String countryMark) {
@@ -60,19 +60,21 @@ public class NewsService {
         GameResult gameResult;
         Answer a;
         String dataFromFile = readNewsCache(context);
-        String[] newsCacheData = dataFromFile.split("#");
+        String[] newsCacheData = dataFromFile.split("\\$");
         // Log.d("rezultati", "duzina "+gamesResultsData[0]);
         for (int i = 1; i < newsCacheData.length; i++) {
             Articles articles=new Articles();
-            String[] articlesData=newsCacheData[i].split(",");
+            String[] articlesData=newsCacheData[i].split("##");
             if(countryMark.equals(articlesData[0])){
                 articles.setTitle(articlesData[1]);
                 Source source=new Source();
                 source.setName(articlesData[2]);
                 articles.setSource(source);
                 articles.setPublishedAt(articlesData[3]);
+
+                articlesList.add(articles);
             }
-            articlesList.add(articles);
+
 
         }
 

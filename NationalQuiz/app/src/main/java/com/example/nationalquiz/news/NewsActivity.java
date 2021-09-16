@@ -40,21 +40,20 @@ public class NewsActivity extends AppCompatActivity {
         connection = intent.getBooleanExtra("internet", false);
         caching = intent.getBooleanExtra("caching", false);
 
-        Log.i("Drzava", ""+ NewsService.readNewsCache(NewsActivity.this));
+        Log.i("Drzava", "" + NewsService.readNewsCache(NewsActivity.this));
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new Adapter(NewsActivity.this, articles,connection);
+        adapter = new Adapter(NewsActivity.this, articles, connection);
         recyclerView.setAdapter(adapter);
-
+        NewsService.readNewsCache(NewsActivity.this);
         if (connection)
             retrieveJson(countryMark, API_KEY);
-        else{
+        else {
             getCachedNews(countryMark);
         }
 
     }
-
 
 
     public void retrieveJson(String country, String apiKey) {
@@ -67,26 +66,26 @@ public class NewsActivity extends AppCompatActivity {
                     articles.clear();
                     articles = response.body().getArticles();
                     Log.i("Drzava", "a" + articles.size());
-                    adapter = new Adapter(NewsActivity.this, articles,connection);
+                    adapter = new Adapter(NewsActivity.this, articles, connection);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     //getData();;
-                    if(caching){
-                        List<Articles> existedArticlesList= NewsService.getNewsCacheFromFileForCountry(NewsActivity.this,country);
-                        for(Articles a:existedArticlesList)
+                    if (caching) {
+                        List<Articles> existedArticlesList = NewsService.getNewsCacheFromFileForCountry(NewsActivity.this, country);
+                        for (Articles a : existedArticlesList)
                             Log.i("Drzava", "a" + a);
-                        List<Articles> articlesToCacheList=new LinkedList<>();
-                        for(Articles newArticle:articles){
-                            boolean exist=false;
-                            for(Articles existedArticle:existedArticlesList){
-                                if(existedArticle.getPublishedAt().equals(newArticle.getPublishedAt()))
-                                    exist=true;
+                        List<Articles> articlesToCacheList = new LinkedList<>();
+                        for (Articles newArticle : articles) {
+                            boolean exist = false;
+                            for (Articles existedArticle : existedArticlesList) {
+                                if (existedArticle.getPublishedAt().equals(newArticle.getPublishedAt()))
+                                    exist = true;
                             }
-                            if(!exist){
+                            if (!exist) {
                                 articlesToCacheList.add(newArticle);
                             }
                         }
-                        NewsService.writeNewsCache(articlesToCacheList,NewsActivity.this,country);
+                        NewsService.writeNewsCache(articlesToCacheList, NewsActivity.this, country);
 
                     }
                 }
@@ -103,9 +102,12 @@ public class NewsActivity extends AppCompatActivity {
     private void getCachedNews(String countryMark) {
 
         articles.clear();
-        articles=NewsService.getNewsCacheFromFileForCountry(NewsActivity.this,countryMark);
-        Log.i("Drzava", "Broj novosti kada se povlace kesiranje novosti "+articles.size());
-        adapter = new Adapter(NewsActivity.this, articles,connection);
+        articles = NewsService.getNewsCacheFromFileForCountry(NewsActivity.this, countryMark);
+        if(articles.size()==0)
+            Toast.makeText(this, "Nema kesiranih vijesti", Toast.LENGTH_LONG).show();
+        for(Articles a:articles)
+            Log.i("kes", "stanje povuceno " + a);
+        adapter = new Adapter(NewsActivity.this, articles, connection);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
