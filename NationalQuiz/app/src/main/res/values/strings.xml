@@ -44,4 +44,7 @@
     <string name="caching">Caching</string>
     <string name="news">News</string>
     <string name="noInternetConnection">No internet connection</string>
+    <string name="facebookAppId">201433945272753</string>
+    <string name="facebookLoginProtocol_scheme">fb201433945272753</string>
+
 </resources>

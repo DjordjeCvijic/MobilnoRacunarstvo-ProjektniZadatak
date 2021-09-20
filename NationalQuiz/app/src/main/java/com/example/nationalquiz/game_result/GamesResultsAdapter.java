@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nationalquiz.FacebookSharingActivity;
 import com.example.nationalquiz.R;
 import com.example.nationalquiz.models.GameResult;
 
@@ -86,7 +87,9 @@ public class GamesResultsAdapter extends RecyclerView.Adapter<GamesResultsAdapte
         holder.shareGameResultBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Podijeli", Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(context, FacebookSharingActivity.class);
+                intent.putExtra("score",gameResult.getScore());
+                context.startActivity(intent);
             }
         });
 

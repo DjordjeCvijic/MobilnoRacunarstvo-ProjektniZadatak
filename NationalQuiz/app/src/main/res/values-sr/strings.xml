@@ -45,4 +45,6 @@
     <string name="caching">Kesiranje</string>
     <string name="news">Vijesti</string>
     <string name="noInternetConnection">Nema internet konekcije</string>
+    <string name="facebookAppId">201433945272753</string>
+    <string name="facebookLoginProtocol_scheme">fb201433945272753</string>
 </resources>
