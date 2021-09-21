@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nationalquiz">
+    package="com.MRProject.nationalquiz">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -18,13 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
 
-        <activity android:name=".FacebookSharingActivity"></activity>
-        <activity android:name=".game_result.GameResultDetailsActivity" />
-        <activity android:name=".game_result.GamesResultsActivity" />
-        <activity android:name=".games.CountryFlagActivity" />
-        <activity android:name=".games.NeighboringCountryActivity" />
-        <activity android:name=".games.CountrySightsActivity" />
-        <activity android:name=".CustomInfoWindowAdapter" />
+        <activity android:name="com.MRProject.nationalquiz.FacebookSharingActivity"></activity>
+        <activity android:name="com.MRProject.nationalquiz.game_result.GameResultDetailsActivity" />
+        <activity android:name="com.MRProject.nationalquiz.game_result.GamesResultsActivity" />
+        <activity android:name="com.MRProject.nationalquiz.games.CountryFlagActivity" />
+        <activity android:name="com.MRProject.nationalquiz.games.NeighboringCountryActivity" />
+        <activity android:name="com.MRProject.nationalquiz.games.CountrySightsActivity" />
+        <activity android:name="com.MRProject.nationalquiz.CustomInfoWindowAdapter" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -40,14 +40,14 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="com.MRProject.nationalquiz.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".Preference" />
-        <activity android:name=".news.NewsDetailsActivity" />
-        <activity android:name=".news.NewsActivity" />
-        <activity android:name=".games.CapitalCitiesActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".StartScreenActivity">
+        <activity android:name="com.MRProject.nationalquiz.Preference" />
+        <activity android:name="com.MRProject.nationalquiz.news.NewsDetailsActivity" />
+        <activity android:name="com.MRProject.nationalquiz.news.NewsActivity" />
+        <activity android:name="com.MRProject.nationalquiz.games.CapitalCitiesActivity" />
+        <activity android:name="com.MRProject.nationalquiz.MainActivity" />
+        <activity android:name="com.MRProject.nationalquiz.StartScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,7 +55,7 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="com.facebook.app.FacebookContentProvider201433945272753"
+            android:authorities="com.facebook.app.FacebookContentProvider386641319784381"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
     </application>
