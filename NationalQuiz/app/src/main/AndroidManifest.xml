@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.MRProject.nationalquiz">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -12,9 +13,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_national_quiz"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_national_quiz_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
 
@@ -23,7 +24,8 @@
         <activity android:name="com.MRProject.nationalquiz.games.CountryFlagActivity" />
         <activity android:name="com.MRProject.nationalquiz.games.NeighboringCountryActivity" />
         <activity android:name="com.MRProject.nationalquiz.games.CountrySightsActivity" />
-        <activity android:name="com.MRProject.nationalquiz.CustomInfoWindowAdapter" />
+        <activity android:name="com.MRProject.nationalquiz.CustomInfoWindowAdapter"
+            tools:ignore="Instantiatable" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -45,14 +47,13 @@
         <activity android:name="com.MRProject.nationalquiz.news.NewsDetailsActivity" />
         <activity android:name="com.MRProject.nationalquiz.news.NewsActivity" />
         <activity android:name="com.MRProject.nationalquiz.games.CapitalCitiesActivity" />
-        <activity android:name="com.MRProject.nationalquiz.MainActivity" />
-        <activity android:name="com.MRProject.nationalquiz.StartScreenActivity">
+        <activity android:name="com.MRProject.nationalquiz.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.MRProject.nationalquiz.StartScreenActivity"/>
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider386641319784381"
             android:name="com.facebook.FacebookContentProvider"

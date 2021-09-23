@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">National Quiz</string>
-    <string name="startGame">Zapocni igru</string>
+    <string name="startGame">Započni igru</string>
     <string name="capitalCities">Glavni gradovi</string>
-    <string name="countriesFlags">Zastave drzava</string>
-    <string name="neighboringCountries">Susjedne drzave</string>
+    <string name="countriesFlags">Zastave država</string>
+    <string name="neighboringCountries">Susjedne države</string>
     <string name="sights">Znamenitosti</string>
     <string name="areYouSure">Da li ste sigurni ?</string>
     <string name="yes">Da</string>
     <string name="no">Ne</string>
     <string name="title_activity_maps">Mapa</string>
-    <string name="capitalCitiesQuestion">Koji od ponudjenih gradova je glavni grad drzave </string>
+    <string name="capitalCitiesQuestion">Koji od ponuđenih gradova je glavni grad drzave </string>
     <string name="countrySightsQuestion">U kojoj od ponudjenih država se nalazi znamenitost sa slike ?</string>
     <string name="neighboringCountryQuestion">Koja od ponudjenih drazava granici sa drzavom </string>
     <string name="countryFlagQuestion">Zastava koje drzave se nalazi na slici? (Iskoristiti ponudjena slova)</string>
@@ -50,4 +50,5 @@
     <string name="youHaveToGiveAnAnswer">Morate dati odgovor</string>
     <string name="youHaveGivenAnAnswer">Dali ste odgovor</string>
     <string name="noCachedNews">Nema kesiranih vijesti</string>
+    <string name="resultSaved">Result is saved</string>
 </resources>

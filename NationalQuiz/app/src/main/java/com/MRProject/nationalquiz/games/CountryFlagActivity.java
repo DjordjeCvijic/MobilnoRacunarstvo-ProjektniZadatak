@@ -120,14 +120,15 @@ public class CountryFlagActivity extends AppCompatActivity {
                 } else {
                     Answer answer = new Answer(questionTv.getText().toString(), answerEt.getText().toString().toLowerCase(), currentCountry.getFlagImage());
                     if (answerEt.getText().toString().toLowerCase().equals(
-                            (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase()).toLowerCase())) {
+                            (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr()).toLowerCase())) {
                         Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
                         currentScore++;
                         currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                         enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.green, null));
                         answer.setCorrect(true);
                     } else {
-                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CountryFlagActivity.this, selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr(), Toast.LENGTH_SHORT).show();
                         enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.red, null));
                         answer.setCorrect(false);
                     }
@@ -180,6 +181,7 @@ public class CountryFlagActivity extends AppCompatActivity {
 
                         dialog.dismiss();
                         finish();
+                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.resultSaved), Toast.LENGTH_SHORT).show();
                     }
                 });
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +211,7 @@ public class CountryFlagActivity extends AppCompatActivity {
             answerIsCorrect = false;
             answerEt.setText("");
             numberOfCurrentQuestion++;
-            enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
             Random ran = new Random();
             currentCountry = countriesDataList.get(ran.nextInt(20));

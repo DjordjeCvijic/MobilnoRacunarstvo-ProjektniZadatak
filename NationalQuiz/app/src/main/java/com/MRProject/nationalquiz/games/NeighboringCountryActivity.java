@@ -181,6 +181,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
 
                         dialog.dismiss();
                         finish();
+                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.resultSaved), Toast.LENGTH_SHORT).show();
                     }
                 });
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +245,6 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                             answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                         answer.setCorrect(false);
                     }
-                    answer.setCorrect(true);
                     gameResult.addAnswer(answer);
                     dialog.dismiss();
                 }
@@ -299,19 +299,19 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             answer1Btn.setText(answers.get(i));
             answers.remove(i);
             i = ran.nextInt(3);
-            answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer1Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer1Btn.setEnabled(true);
             answer2Btn.setText(answers.get(i));
             answers.remove(i);
             i = ran.nextInt(2);
-            answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer2Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer2Btn.setEnabled(true);
             answer3Btn.setText(answers.get(i));
             answers.remove(i);
-            answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer3Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer3Btn.setEnabled(true);
             answer4Btn.setText(answers.get(0));
-            answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer4Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer4Btn.setEnabled(true);
         } else {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();

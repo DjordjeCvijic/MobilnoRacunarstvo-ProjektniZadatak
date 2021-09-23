@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.MRProject.nationalquiz.R;
@@ -19,10 +20,13 @@ public class GamesResultsActivity extends AppCompatActivity {
     GamesResultsAdapter gamesResultsAdapter;
     List<GameResult> gameResultList=new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_results);
+        Intent intent = getIntent();
+
 
         recyclerView=findViewById(R.id.recyclerViewForResult);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -36,14 +40,10 @@ public class GamesResultsActivity extends AppCompatActivity {
     private void getGamesResultsFromFile() {
 
         gameResultList= GameResultService.getGamesResultsFromFile(GamesResultsActivity.this);
-
-
         gamesResultsAdapter=new GamesResultsAdapter(GamesResultsActivity.this,gameResultList,this);
         recyclerView.setAdapter(gamesResultsAdapter);
         gamesResultsAdapter.notifyDataSetChanged();
 
     }
-    public static void shareScore(String score){
 
-    }
 }

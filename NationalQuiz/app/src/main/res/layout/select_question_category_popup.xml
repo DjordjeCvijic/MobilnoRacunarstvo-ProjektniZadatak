@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/mySecondary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,27 +17,33 @@
             android:id="@+id/capitalCitiesBtn"
             android:text="@string/capitalCities"
             android:layout_width="282dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="75dp"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
         <Button
             android:id="@+id/countriesFlagsBtn"
             android:text="@string/countriesFlags"
             android:layout_width="282dp"
-            android:layout_height="64dp"
+            android:layout_height="75dp"
+            android:textSize="18sp"
             android:layout_gravity="center_horizontal"/>
         <Button
             android:id="@+id/neighboringCountriesBtn"
             android:text="@string/neighboringCountries"
             android:layout_width="282dp"
-            android:layout_height="64dp"
+            android:layout_height="75dp"
+            android:textSize="18sp"
             android:layout_gravity="center_horizontal"/>
 
         <Button
             android:id="@+id/sightsBtn"
             android:text="@string/sights"
             android:layout_width="282dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="75dp"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 

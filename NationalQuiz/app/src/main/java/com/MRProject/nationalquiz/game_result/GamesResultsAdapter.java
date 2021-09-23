@@ -3,6 +3,8 @@ package com.MRProject.nationalquiz.game_result;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -31,10 +34,12 @@ public class GamesResultsAdapter extends RecyclerView.Adapter<GamesResultsAdapte
     List<GameResult> gameResultList;
     Activity activity;
 
-    public GamesResultsAdapter(Context context, List<GameResult> gr,Activity a) {
+
+    public GamesResultsAdapter(Context context, List<GameResult> gr, Activity a) {
         this.context = context;
         this.gameResultList = gr;
-        activity=a;
+        activity = a;
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,39 +78,40 @@ public class GamesResultsAdapter extends RecyclerView.Adapter<GamesResultsAdapte
         final GameResult gameResult = gameResultList.get(position);
         holder.playerNameTv.setText(gameResult.getPlayerName());
 
-        LocalDateTime localDateTime=LocalDateTime.parse(gameResult.getDate());
+        LocalDateTime localDateTime = LocalDateTime.parse(gameResult.getDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         holder.dateTv.setText(localDateTime.format(formatter));
 
-        holder.scoreTv.setText(context.getResources().getString(R.string.finalScore)+" "+gameResult.getScore());
+        holder.scoreTv.setText(context.getResources().getString(R.string.finalScore) + " " + gameResult.getScore());
 
         holder.openResultDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, GameResultDetailsActivity.class);
-                intent.putExtra("date",gameResult.getDate());
-                intent.putExtra("title",gameResult.getPlayerName()+" "+localDateTime.format(formatter));
+
+                Intent intent = new Intent(context, GameResultDetailsActivity.class);
+                intent.putExtra("date", gameResult.getDate());
+                intent.putExtra("title", gameResult.getPlayerName() + " " + localDateTime.format(formatter));
                 context.startActivity(intent);
+
 
             }
         });
         holder.shareGameResultBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent=new Intent(context, FacebookSharingActivity.class);
-//                intent.putExtra("score",gameResult.getScore());
-//                context.startActivity(intent);
-
-                FacebookSdk.sdkInitialize(context.getApplicationContext());
-                ShareDialog shareDialog;
-                shareDialog = new ShareDialog(activity);
+                if (internetIsConnected()) {
+                    FacebookSdk.sdkInitialize(context.getApplicationContext());
+                    ShareDialog shareDialog;
+                    shareDialog = new ShareDialog(activity);
 
 
-                ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(context.getResources().getString(R.string.finalScore) + gameResult.getScore())
-                        .setContentUrl(Uri.parse("https://play.google.com/store")).build();
-                if (ShareDialog.canShow(ShareLinkContent.class)) {
-                    shareDialog.show(linkContent);
-                }
+                    ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(context.getResources().getString(R.string.finalScore) + gameResult.getScore())
+                            .setContentUrl(Uri.parse("https://play.google.com/store")).build();
+                    if (ShareDialog.canShow(ShareLinkContent.class)) {
+                        shareDialog.show(linkContent);
+                    }
+                } else
+                    Toast.makeText(context, context.getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,5 +121,20 @@ public class GamesResultsAdapter extends RecyclerView.Adapter<GamesResultsAdapte
     @Override
     public int getItemCount() {
         return gameResultList.size();
+    }
+
+    private boolean internetIsConnected() {
+        boolean connected = false;
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            // connected to the internet
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                connected = true;
+            }
+
+        }
+        return connected;
+
     }
 }

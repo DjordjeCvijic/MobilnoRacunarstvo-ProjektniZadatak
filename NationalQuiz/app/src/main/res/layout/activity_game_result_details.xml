@@ -12,17 +12,18 @@
         android:id="@+id/titleTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/myDarkerSecondary"
+        android:textStyle="bold|italic"
         android:padding="10dp"
         android:text="@string/gameDetails"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textColor="@color/textColor"
+        android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForResultDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp" />
+        android:background="@color/mySecondary" />
 
 </LinearLayout>

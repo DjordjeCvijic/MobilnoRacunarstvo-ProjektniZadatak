@@ -73,6 +73,7 @@ public class GameResultService {
                 Log.d("Podaci", a.toString());
                 gameResult.addAnswer(a);
             }
+            Log.d("rezultati", gameResult.toString());
             gameResultList.add(gameResult);
         }
 

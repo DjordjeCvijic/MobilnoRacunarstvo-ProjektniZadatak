@@ -3,8 +3,14 @@ package com.MRProject.nationalquiz;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,24 +24,30 @@ import com.MRProject.nationalquiz.games.CountryFlagActivity;
 import com.MRProject.nationalquiz.games.CountrySightsActivity;
 import com.MRProject.nationalquiz.games.NeighboringCountryActivity;
 
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
 
     Button startGameBtn;
     Button settingsBtn;
     Button gameHistoryBtn;
+    private String selectedLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         CountryDBHelper countryDBHelper = new CountryDBHelper(MainActivity.this);
         CountryDBService.fillDadaBase(countryDBHelper, this);
 
-        Log.i("kreiranje","main aktiviti");
+        Log.i("kreiranje", "main aktiviti");
 
-        startGameBtn=findViewById(R.id.startGameBtn);
+        startGameBtn = findViewById(R.id.startGameBtn);
 
         startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,24 +56,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        settingsBtn=findViewById(R.id.settingsBtn);
+        settingsBtn = findViewById(R.id.settingsBtn);
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,Preference.class);
+                Intent i = new Intent(MainActivity.this, Preference.class);
                 startActivity(i);
             }
         });
 
-        gameHistoryBtn=findViewById(R.id.gameHistoryBtn);
+        gameHistoryBtn = findViewById(R.id.gameHistoryBtn);
         gameHistoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GamesResultsActivity.class);
+
                 startActivity(intent);
             }
         });
-
+//        loadSetting();
+//        setLocale();
 
     }
 
@@ -74,14 +88,11 @@ public class MainActivity extends AppCompatActivity {
         final View selectQuestionCategoryPopup = inflater.inflate(R.layout.select_question_category_popup, null);
 
 
-
-
-
         dialogBuilder.setView(selectQuestionCategoryPopup);
         dialog = dialogBuilder.create();
         dialog.show();
 
-        Button capitalCitiesBtn=selectQuestionCategoryPopup.findViewById(R.id.capitalCitiesBtn);
+        Button capitalCitiesBtn = selectQuestionCategoryPopup.findViewById(R.id.capitalCitiesBtn);
         capitalCitiesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        Button countriesFlagsBtn=selectQuestionCategoryPopup.findViewById(R.id.countriesFlagsBtn);
+        Button countriesFlagsBtn = selectQuestionCategoryPopup.findViewById(R.id.countriesFlagsBtn);
         countriesFlagsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        Button neighboringCountriesBtn=selectQuestionCategoryPopup.findViewById(R.id.neighboringCountriesBtn);
+        Button neighboringCountriesBtn = selectQuestionCategoryPopup.findViewById(R.id.neighboringCountriesBtn);
         neighboringCountriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        Button sightsBtn=selectQuestionCategoryPopup.findViewById(R.id.sightsBtn);
+        Button sightsBtn = selectQuestionCategoryPopup.findViewById(R.id.sightsBtn);
         sightsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +136,24 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
         finishAffinity();
+    }
+
+    private void loadSetting() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        selectedLanguage = sp.getString("LANGUAGE", "en");
+
+    }
+
+    public void setLocale() {
+
+        Locale locale = new Locale(selectedLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,
+                getBaseContext().getResources().getDisplayMetrics());
+        //this.setContentView(R.layout.activity_start_screen);
+
     }
 
 

@@ -160,7 +160,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                     Intent intent = new Intent(CapitalCitiesActivity.this, MapsActivity.class);
                     startActivity(intent);
                 } else
-                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.youHaveToGiveAnAnswer), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -226,6 +226,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                 cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
 
                 finalResultTv.setText(getResources().getString(R.string.finalScore) + currentScore);
+
                 saveBtn.setOnClickListener(new View.OnClickListener() {
 
                     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -242,6 +243,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                         GameResultService.readGameResult(CapitalCitiesActivity.this);
                         dialog.dismiss();
                         finish();
+                        Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.resultSaved), Toast.LENGTH_SHORT).show();
                     }
                 });
                 cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -291,10 +293,10 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                         answerIsCorrect = true;
                         currentScore++;
                         currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
+                        answer.setCorrect(true);
                     } else {
                         Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
                         btn.setBackgroundColor(getResources().getColor(R.color.red, null));
-                        hintBtn.setEnabled(false);
                         if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
                             answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                         } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
@@ -303,8 +305,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                             answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                         } else
                             answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        answer.setCorrect(false);
                     }
-                    answer.setCorrect(true);
+
                     gameResult.addAnswer(answer);
                     dialog.dismiss();
                 }
@@ -354,19 +357,19 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             answer1Btn.setText(answers.get(i));
             answers.remove(i);
             i = ran.nextInt(3);
-            answer1Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer1Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer1Btn.setEnabled(true);
             answer2Btn.setText(answers.get(i));
             answers.remove(i);
             i = ran.nextInt(2);
-            answer2Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer2Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer2Btn.setEnabled(true);
             answer3Btn.setText(answers.get(i));
             answers.remove(i);
-            answer3Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer3Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer3Btn.setEnabled(true);
             answer4Btn.setText(answers.get(0));
-            answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
+            answer4Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer4Btn.setEnabled(true);
         } else {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
@@ -399,9 +402,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 connected = true;
             }
-//            else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-//                connected = true;
-//            }
+
         }
         return connected;
 
