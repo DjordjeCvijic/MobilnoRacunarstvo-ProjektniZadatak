@@ -23,7 +23,7 @@ public class NewsService {
             FileOutputStream fileout = context.openFileOutput(fileName, context.MODE_APPEND);//treba . txt
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             for (Articles articles : articlesList) {
-                outputWriter.append("$" + countryMark+"##"+articles.getTitle()+"##"+articles.getSource().getName()+"##"+articles.getPublishedAt());
+                outputWriter.append("$terminated$" + countryMark+"#terminated#"+articles.getTitle()+"#terminated#"+articles.getSource().getName()+"#terminated#"+articles.getPublishedAt());
             }
             outputWriter.close();
         } catch (Exception e) {
@@ -60,12 +60,12 @@ public class NewsService {
         GameResult gameResult;
         Answer a;
         String dataFromFile = readNewsCache(context);
-        String[] newsCacheData = dataFromFile.split("\\$");
+        String[] newsCacheData = dataFromFile.split("\\$terminated\\$");
         // Log.d("rezultati", "duzina "+gamesResultsData[0]);
         for (int i = 1; i < newsCacheData.length; i++) {
             Articles articles=new Articles();
-            String[] articlesData=newsCacheData[i].split("##");
-            if(countryMark.equals(articlesData[0])){
+            String[] articlesData=newsCacheData[i].split("#terminated#");
+            if(countryMark.equals(articlesData[0]) || countryMark.equals("*")){
                 articles.setTitle(articlesData[1]);
                 Source source=new Source();
                 source.setName(articlesData[2]);

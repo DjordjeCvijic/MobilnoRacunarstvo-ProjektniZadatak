@@ -104,7 +104,7 @@ public class NewsActivity extends AppCompatActivity {
         articles.clear();
         articles = NewsService.getNewsCacheFromFileForCountry(NewsActivity.this, countryMark);
         if(articles.size()==0)
-            Toast.makeText(this, "Nema kesiranih vijesti", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.noCachedNews), Toast.LENGTH_LONG).show();
         for(Articles a:articles)
             Log.i("kes", "stanje povuceno " + a);
         adapter = new Adapter(NewsActivity.this, articles, connection);

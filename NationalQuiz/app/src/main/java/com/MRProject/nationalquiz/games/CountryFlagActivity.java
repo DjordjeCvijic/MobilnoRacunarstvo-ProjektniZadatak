@@ -38,8 +38,8 @@ public class CountryFlagActivity extends AppCompatActivity {
     private int numberOfCurrentQuestion;
     private int numberOfHints = 3;
     private int currentScore = 0;
-    private GameResult gameResult=new GameResult();
-
+    private GameResult gameResult = new GameResult();
+    private boolean answerIsCorrect = false;
     private Button nextQuestionBtn;
     private Button endGameBtn;
     private ImageButton hintBtn;
@@ -51,7 +51,6 @@ public class CountryFlagActivity extends AppCompatActivity {
     private TextView questionTv;
     private EditText answerEt;
     private ImageView imageHolderIv;
-
 
 
     public static Country currentCountry;
@@ -76,7 +75,7 @@ public class CountryFlagActivity extends AppCompatActivity {
         hintBtn = findViewById(R.id.hintBtn);
         currentScoreTv = findViewById(R.id.currentScoreTv);
         lettersTv = findViewById(R.id.lettersTv);
-        questionTv=findViewById(R.id.questionTv);
+        questionTv = findViewById(R.id.questionTv);
         imageHolderIv = findViewById(R.id.imageHolderIv);
         answerEt = findViewById(R.id.answerEt);
 
@@ -95,16 +94,20 @@ public class CountryFlagActivity extends AppCompatActivity {
         hintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (numberOfHints == 0)
+                if (answerIsCorrect) {
+                    Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
+                } else if (numberOfHints == 0)
                     Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
                 else {
 
                     String currentText = answerEt.getText().toString();
-                    char nextLetter = (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase().toLowerCase()).charAt(currentText.length());
-                    String newText = currentText.concat(String.valueOf(nextLetter));
-                    answerEt.setText(newText);
-                    numberOfHints--;
-                    numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    if (currentText.length() != (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr()).length()) {
+                        char nextLetter = ((selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr()).toLowerCase()).charAt(currentText.length());
+                        String newText = currentText.concat(String.valueOf(nextLetter));
+                        answerEt.setText(newText);
+                        numberOfHints--;
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    }
                 }
 
             }
@@ -112,25 +115,29 @@ public class CountryFlagActivity extends AppCompatActivity {
         enterAnswerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Answer answer=new Answer(questionTv.getText().toString(),answerEt.getText().toString().toLowerCase(),currentCountry.getFlagImage());
-                if (answerEt.getText().toString().toLowerCase().equals(
-                        (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase()).toLowerCase())) {
-                    Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
-                    currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
-                    enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    answer.setCorrect(true);
+                if (answerIsCorrect) {
+                    Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
-                    enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.red, null));
-                    answer.setCorrect(false);
+                    Answer answer = new Answer(questionTv.getText().toString(), answerEt.getText().toString().toLowerCase(), currentCountry.getFlagImage());
+                    if (answerEt.getText().toString().toLowerCase().equals(
+                            (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr().toLowerCase()).toLowerCase())) {
+                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                        currentScore++;
+                        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
+                        enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        answer.setCorrect(true);
+                    } else {
+                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.red, null));
+                        answer.setCorrect(false);
+                    }
+                    answerIsCorrect = true;
+
+                    closeKeyboard();
+                    gameResult.addAnswer(answer);
                 }
-                nextQuestionBtn.setEnabled(true);
-                hintBtn.setEnabled(false);
-                enterAnswerBtn.setEnabled(false);
-                closeKeyboard();
-                gameResult.addAnswer(answer);
             }
+
         });
 
         endGameBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +158,7 @@ public class CountryFlagActivity extends AppCompatActivity {
                 Button cancelBtn;
                 EditText playerNameEt;
 
-                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                playerNameEt = saveResultPopup.findViewById(R.id.enteredNameEt);
                 finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
                 saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
                 cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
@@ -162,14 +169,14 @@ public class CountryFlagActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(View v) {
-                        LocalDateTime dateTime=LocalDateTime.now();
-                        String playerName=playerNameEt.getText().toString();
-                        String score=currentScore+"/"+numberOfQuestions;
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        String playerName = playerNameEt.getText().toString();
+                        String score = currentScore + "/" + numberOfQuestions;
                         gameResult.setDate(dateTime.toString());
                         gameResult.setPlayerName(playerName);
                         gameResult.setScore(score);
 
-                        GameResultService.writeGameResult(gameResult,CountryFlagActivity.this);
+                        GameResultService.writeGameResult(gameResult, CountryFlagActivity.this);
 
                         dialog.dismiss();
                         finish();
@@ -199,9 +206,7 @@ public class CountryFlagActivity extends AppCompatActivity {
 
     private void setQuestion() {
         if (numberOfCurrentQuestion != numberOfQuestions) {
-
-            hintBtn.setEnabled(true);
-            enterAnswerBtn.setEnabled(true);
+            answerIsCorrect = false;
             answerEt.setText("");
             numberOfCurrentQuestion++;
             enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
@@ -241,12 +246,10 @@ public class CountryFlagActivity extends AppCompatActivity {
 
     }
 
-        @Override
-        public void onBackPressed() {
-            endGameBtn.performClick();
-        }
-
-
+    @Override
+    public void onBackPressed() {
+        endGameBtn.performClick();
+    }
 
 
 }

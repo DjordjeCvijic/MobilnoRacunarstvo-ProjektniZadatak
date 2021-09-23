@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NationalQuiz">
 
-        <activity android:name="com.MRProject.nationalquiz.FacebookSharingActivity"></activity>
         <activity android:name="com.MRProject.nationalquiz.game_result.GameResultDetailsActivity" />
         <activity android:name="com.MRProject.nationalquiz.game_result.GamesResultsActivity" />
         <activity android:name="com.MRProject.nationalquiz.games.CountryFlagActivity" />

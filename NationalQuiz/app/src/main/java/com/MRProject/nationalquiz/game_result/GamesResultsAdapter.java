@@ -16,7 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.MRProject.nationalquiz.FacebookSharingActivity;
 import com.MRProject.nationalquiz.R;
 import com.MRProject.nationalquiz.models.GameResult;
 import com.facebook.FacebookSdk;

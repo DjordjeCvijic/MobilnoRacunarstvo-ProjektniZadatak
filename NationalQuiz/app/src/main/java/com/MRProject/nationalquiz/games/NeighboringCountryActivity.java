@@ -35,8 +35,8 @@ public class NeighboringCountryActivity extends AppCompatActivity {
     private int numberOfCurrentQuestion;
     private int numberOfHints = 3;
     private int currentScore = 0;
-    private GameResult gameResult=new GameResult();
-
+    private GameResult gameResult = new GameResult();
+    private boolean answerIsCorrect = false;
 
     private TextView questionTv;
     private Button answer1Btn;
@@ -64,20 +64,20 @@ public class NeighboringCountryActivity extends AppCompatActivity {
 
         loadSetting();
 
-        numOfQuestionTv=findViewById(R.id.numOfQuestionTv);
-        numberOfHintsTv=findViewById(R.id.hintNumberTv);
+        numOfQuestionTv = findViewById(R.id.numOfQuestionTv);
+        numberOfHintsTv = findViewById(R.id.hintNumberTv);
         questionTv = findViewById(R.id.questionTv);
         answer1Btn = findViewById(R.id.answer1Btn);
         answer2Btn = findViewById(R.id.answer2Btn);
         answer3Btn = findViewById(R.id.answer3Btn);
         answer4Btn = findViewById(R.id.answer4Btn);
-        nextQuestionBtn=findViewById(R.id.nextQuestionBtn);
-        endGameBtn=findViewById(R.id.endGameBtn);
-        hintBtn=findViewById(R.id.hintBtn);
-        currentScoreTv=findViewById(R.id.currentScoreTv);
+        nextQuestionBtn = findViewById(R.id.nextQuestionBtn);
+        endGameBtn = findViewById(R.id.endGameBtn);
+        hintBtn = findViewById(R.id.hintBtn);
+        currentScoreTv = findViewById(R.id.currentScoreTv);
 
-        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-        currentScoreTv.setText(getResources().getString(R.string.currentScore)+currentScore);
+        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
 
         setQuestion();
 
@@ -115,25 +115,27 @@ public class NeighboringCountryActivity extends AppCompatActivity {
         hintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(numberOfHints==0 )
+                if (answerIsCorrect) {
+                    Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
+                } else  if (numberOfHints == 0)
                     Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
-                else{
-                    if( answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
+                else {
+                    if (answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
                         answer1Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
                         answer2Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
                         answer3Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
-                    }else if(answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
+                    } else if (answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
                         answer4Btn.setEnabled(false);
                         numberOfHints--;
-                        numberOfHintsTv.setText(getResources().getString(R.string.hint)+numberOfHints);
+                        numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
                     }
                 }
 
@@ -157,7 +159,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                 Button cancelBtn;
                 EditText playerNameEt;
 
-                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                playerNameEt = saveResultPopup.findViewById(R.id.enteredNameEt);
                 finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
                 saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
                 cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
@@ -168,14 +170,14 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(View v) {
-                        LocalDateTime dateTime=LocalDateTime.now();
-                        String playerName=playerNameEt.getText().toString();
-                        String score=currentScore+"/"+numberOfQuestions;
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        String playerName = playerNameEt.getText().toString();
+                        String score = currentScore + "/" + numberOfQuestions;
                         gameResult.setDate(dateTime.toString());
                         gameResult.setPlayerName(playerName);
                         gameResult.setScore(score);
 
-                        GameResultService.writeGameResult(gameResult,NeighboringCountryActivity.this);
+                        GameResultService.writeGameResult(gameResult, NeighboringCountryActivity.this);
 
                         dialog.dismiss();
                         finish();
@@ -195,73 +197,79 @@ public class NeighboringCountryActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(View v) {
-        Button btn = (Button) findViewById(v.getId());
-        String selectedAnswer = btn.getText().toString();
+        if (answerIsCorrect) {
+            Toast.makeText(this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
+        } else {
+            Button btn = (Button) findViewById(v.getId());
+            String selectedAnswer = btn.getText().toString();
 
 
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        dialogBuilder = new AlertDialog.Builder(NeighboringCountryActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
-        LayoutInflater inflater = LayoutInflater.from(NeighboringCountryActivity.this);
-        final View AnswerConfirmationPopup = inflater.inflate(R.layout.answer_confirmation_popup, null);
+            AlertDialog.Builder dialogBuilder;
+            AlertDialog dialog;
+            dialogBuilder = new AlertDialog.Builder(NeighboringCountryActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
+            LayoutInflater inflater = LayoutInflater.from(NeighboringCountryActivity.this);
+            final View AnswerConfirmationPopup = inflater.inflate(R.layout.answer_confirmation_popup, null);
 
-        Button yesBtn = AnswerConfirmationPopup.findViewById(R.id.yesBtn);
-        Button noBtn = AnswerConfirmationPopup.findViewById(R.id.noBtn);
-
-
-        dialogBuilder.setView(AnswerConfirmationPopup);
-        dialog = dialogBuilder.create();
-        dialog.show();
+            Button yesBtn = AnswerConfirmationPopup.findViewById(R.id.yesBtn);
+            Button noBtn = AnswerConfirmationPopup.findViewById(R.id.noBtn);
 
 
-        yesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Answer answer=new Answer(questionTv.getText().toString(),selectedAnswer,null);
-                if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
-                    Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
-                    btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.currentScore)+currentScore);
+            dialogBuilder.setView(AnswerConfirmationPopup);
+            dialog = dialogBuilder.create();
+            dialog.show();
+
+
+            yesBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Answer answer = new Answer(questionTv.getText().toString(), selectedAnswer, null);
+                    if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
+                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                        btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        currentScore++;
+                        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
+                        answer.setCorrect(true);
+                        answerIsCorrect = false;
+                    } else {
+                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        btn.setBackgroundColor(getResources().getColor(R.color.red, null));
+
+                        if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
+                            answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
+                            answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
+                            answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else
+                            answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        answer.setCorrect(false);
+                    }
                     answer.setCorrect(true);
-                } else {
-                    Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
-                    btn.setBackgroundColor(getResources().getColor(R.color.red, null));
-
-                    if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
-                        answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
-                        answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())){
-                        answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    }else
-                        answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    answer.setCorrect(false);
+                    gameResult.addAnswer(answer);
+                    dialog.dismiss();
                 }
-                hintBtn.setEnabled(false);
-                gameResult.addAnswer(answer);
-                dialog.dismiss();
-            }
-        });
+            });
 
-        noBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+            noBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
+
+        }
 
 
     }
 
     private void setQuestion() {
-        if(numberOfCurrentQuestion!=numberOfQuestions){
+        if (numberOfCurrentQuestion != numberOfQuestions) {
 
-            hintBtn.setEnabled(true);
+            answerIsCorrect = false;
 
             numberOfCurrentQuestion++;
-            numOfQuestionTv.setText(getResources().getString(R.string.question)+numberOfCurrentQuestion+"/"+numberOfQuestions);
+            numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
 
             LinkedList<Country> data = new LinkedList<>();
             Random ran = new Random();
@@ -305,7 +313,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             answer4Btn.setText(answers.get(0));
             answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
             answer4Btn.setEnabled(true);
-        }else{
+        } else {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
 
@@ -320,6 +328,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
         numberOfQuestions = Integer.parseInt(number);
 
     }
+
     @Override
     public void onBackPressed() {
         endGameBtn.performClick();

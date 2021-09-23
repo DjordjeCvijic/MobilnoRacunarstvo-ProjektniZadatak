@@ -47,4 +47,7 @@
     <string name="noInternetConnection">No internet connection</string>
     <string name="facebookAppId">386641319784381</string>
     <string name="facebookLoginProtocol_scheme">fb386641319784381</string>
+    <string name="youHaveToGiveAnAnswer">You have to give an answer</string>
+    <string name="youHaveGivenAnAnswer">You have given an answer</string>
+    <string name="noCachedNews">No cached news</string>
 </resources>

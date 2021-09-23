@@ -38,8 +38,8 @@ public class CountrySightsActivity extends AppCompatActivity {
     private int numberOfCurrentQuestion = 0;
     private int numberOfHints = 3;
     private int currentScore = 0;
-    private GameResult gameResult=new GameResult();
-
+    private GameResult gameResult = new GameResult();
+    private boolean answerIsCorrect = false;
 
     private ImageView imageHolderIv;
     private Button nextQuestionBtn;
@@ -117,22 +117,25 @@ public class CountrySightsActivity extends AppCompatActivity {
         hintBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (numberOfHints == 0)
+
+                if (answerIsCorrect) {
+                    Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
+                } else if (numberOfHints == 0)
                     Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
                 else {
-                    if (answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
+                    if (answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                         answer1Btn.setEnabled(false);
                         numberOfHints--;
                         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
-                    } else if (answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
+                    } else if (answer2Btn.isEnabled() && !answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                         answer2Btn.setEnabled(false);
                         numberOfHints--;
                         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
-                    } else if (answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
+                    } else if (answer3Btn.isEnabled() && !answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                         answer3Btn.setEnabled(false);
                         numberOfHints--;
                         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
-                    } else if (answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getCapitalCityEn() : currentCountry.getCapitalCitySr())) {
+                    } else if (answer4Btn.isEnabled() && !answer4Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
                         answer4Btn.setEnabled(false);
                         numberOfHints--;
                         numberOfHintsTv.setText(getResources().getString(R.string.hint) + numberOfHints);
@@ -159,7 +162,7 @@ public class CountrySightsActivity extends AppCompatActivity {
                 Button cancelBtn;
                 EditText playerNameEt;
 
-                playerNameEt=saveResultPopup.findViewById(R.id.enteredNameEt);
+                playerNameEt = saveResultPopup.findViewById(R.id.enteredNameEt);
                 finalResultTv = saveResultPopup.findViewById(R.id.finalResultTv);
                 saveBtn = saveResultPopup.findViewById(R.id.saveBtn);
                 cancelBtn = saveResultPopup.findViewById(R.id.cancelBtn);
@@ -170,14 +173,14 @@ public class CountrySightsActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(View v) {
-                        LocalDateTime dateTime=LocalDateTime.now();
-                        String playerName=playerNameEt.getText().toString();
-                        String score=currentScore+"/"+numberOfQuestions;
+                        LocalDateTime dateTime = LocalDateTime.now();
+                        String playerName = playerNameEt.getText().toString();
+                        String score = currentScore + "/" + numberOfQuestions;
                         gameResult.setDate(dateTime.toString());
                         gameResult.setPlayerName(playerName);
                         gameResult.setScore(score);
 
-                        GameResultService.writeGameResult(gameResult,CountrySightsActivity.this);
+                        GameResultService.writeGameResult(gameResult, CountrySightsActivity.this);
 
                         dialog.dismiss();
                         finish();
@@ -197,63 +200,67 @@ public class CountrySightsActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(View v) {
-        Button btn = (Button) findViewById(v.getId());
-        String selectedAnswer = btn.getText().toString();
+        if (answerIsCorrect) {
+            Toast.makeText(this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
+        } else {
+            Button btn = (Button) findViewById(v.getId());
+            String selectedAnswer = btn.getText().toString();
 
 
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        dialogBuilder = new AlertDialog.Builder(CountrySightsActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
-        LayoutInflater inflater = LayoutInflater.from(CountrySightsActivity.this);
-        final View AnswerConfirmationPopup = inflater.inflate(R.layout.answer_confirmation_popup, null);
+            AlertDialog.Builder dialogBuilder;
+            AlertDialog dialog;
+            dialogBuilder = new AlertDialog.Builder(CountrySightsActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
+            LayoutInflater inflater = LayoutInflater.from(CountrySightsActivity.this);
+            final View AnswerConfirmationPopup = inflater.inflate(R.layout.answer_confirmation_popup, null);
 
-        Button yesBtn = AnswerConfirmationPopup.findViewById(R.id.yesBtn);
-        Button noBtn = AnswerConfirmationPopup.findViewById(R.id.noBtn);
-
-
-        dialogBuilder.setView(AnswerConfirmationPopup);
-        dialog = dialogBuilder.create();
-        dialog.show();
+            Button yesBtn = AnswerConfirmationPopup.findViewById(R.id.yesBtn);
+            Button noBtn = AnswerConfirmationPopup.findViewById(R.id.noBtn);
 
 
-        yesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Answer answer=new Answer(questionTv.getText().toString(),selectedAnswer,currentCountry.getLandmarkImage());
+            dialogBuilder.setView(AnswerConfirmationPopup);
+            dialog = dialogBuilder.create();
+            dialog.show();
 
-                if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
-                    Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
-                    btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    answer.setCorrect(true);
-                    currentScore++;
-                    currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
-                } else {
-                    Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
-                    btn.setBackgroundColor(getResources().getColor(R.color.red, null));
 
-                    if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
-                        answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
-                        answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    } else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
-                        answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    } else
-                        answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
-                    answer.setCorrect(false);
+            yesBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Answer answer = new Answer(questionTv.getText().toString(), selectedAnswer, currentCountry.getLandmarkImage());
+
+                    if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
+                        Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                        btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        answer.setCorrect(true);
+                        currentScore++;
+                        currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
+                    } else {
+                        Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        btn.setBackgroundColor(getResources().getColor(R.color.red, null));
+
+                        if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
+                            answer1Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else if (answer2Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
+                            answer2Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else if (answer3Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
+                            answer3Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        } else
+                            answer4Btn.setBackgroundColor(getResources().getColor(R.color.green, null));
+                        answer.setCorrect(false);
+                    }
+                    answerIsCorrect = true;
+                    gameResult.addAnswer(answer);
+                    dialog.dismiss();
                 }
-                nextQuestionBtn.setEnabled(true);
-                hintBtn.setEnabled(false);
-                gameResult.addAnswer(answer);
-                dialog.dismiss();
-            }
-        });
+            });
 
-        noBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+            noBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
     }
 
 
@@ -267,12 +274,11 @@ public class CountrySightsActivity extends AppCompatActivity {
     }
 
     private void setQuestion() {
-        if(numberOfCurrentQuestion!=numberOfQuestions){
+        if (numberOfCurrentQuestion != numberOfQuestions) {
             numberOfCurrentQuestion++;
             numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
+            answerIsCorrect = false;
 
-
-            hintBtn.setEnabled(true);
 
             LinkedList<Country> data = new LinkedList<>();
             Random ran = new Random();
@@ -308,11 +314,12 @@ public class CountrySightsActivity extends AppCompatActivity {
             answer4Btn.setText(answers.get(0));
             answer4Btn.setBackgroundColor(getResources().getColor(R.color.purple_500, null));
             answer4Btn.setEnabled(true);
-        }else{
+        } else {
             Toast.makeText(this, getResources().getString(R.string.thisIsLastQuestion), Toast.LENGTH_SHORT).show();
         }
 
     }
+
     @Override
     public void onBackPressed() {
         endGameBtn.performClick();
