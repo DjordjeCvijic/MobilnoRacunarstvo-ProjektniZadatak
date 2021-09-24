@@ -75,7 +75,7 @@
         <TextView
             android:id="@+id/questionTv"
             android:layout_width="350dp"
-            android:layout_height="64dp"
+            android:layout_height="84dp"
             android:text="@string/capitalCitiesQuestion"
             android:textAlignment="center"
             android:textColor="@color/textColor"

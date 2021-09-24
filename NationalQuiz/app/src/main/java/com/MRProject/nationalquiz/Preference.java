@@ -17,7 +17,9 @@ public class Preference extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setTheme(R.style.PreferencesTheme);
         addPreferencesFromResource(R.xml.prefs);
         load_setting();
     }
