@@ -15,15 +15,14 @@
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.068"
-        />
+        app:layout_constraintVertical_bias="0.068" />
 
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="National Quiz"
+        android:text="@string/app_name"
         android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textSize="40sp"
@@ -52,22 +51,22 @@
             android:id="@+id/startGameBtn"
             android:layout_width="247dp"
             android:layout_height="78dp"
-            android:textSize="19sp"
-            android:text="@string/startGame" />
+            android:text="@string/startGame"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/settingsBtn"
             android:layout_width="247dp"
             android:layout_height="78dp"
-            android:textSize="19sp"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:textSize="19sp" />
 
         <Button
             android:id="@+id/gameHistoryBtn"
             android:layout_width="247dp"
             android:layout_height="78dp"
-            android:textSize="19sp"
-            android:text="@string/gameHistory" />
+            android:text="@string/gameHistory"
+            android:textSize="19sp" />
 
     </LinearLayout>
 

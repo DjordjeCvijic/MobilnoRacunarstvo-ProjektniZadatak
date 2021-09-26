@@ -1,7 +1,6 @@
 package com.MRProject.nationalquiz.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.MRProject.nationalquiz.R;
 import com.MRProject.nationalquiz.data_base.CountryDBHelper;
@@ -14,23 +13,20 @@ import java.io.InputStreamReader;
 
 public class CountryDBService {
 
-    public static void fillDadaBase(CountryDBHelper dbHelper, Context context){
-        if(dbHelper.numberOfRows()!=20){
-            Log.i("Baza","Generisanje baze");
-            Country country=new Country();
+    public static void fillDadaBase(CountryDBHelper dbHelper, Context context) {
+        if (dbHelper.numberOfRows() != 20) {
+            Country country = new Country();
 
-            
             InputStream is = context.getResources().openRawResource(R.raw.countries_data);
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-            String lineFromFile = "";
-            String []argumentsOfCity;
+            String lineFromFile;
+            String[] argumentsOfCity;
             try {
-                lineFromFile= reader.readLine();
+                lineFromFile = reader.readLine();
 
-                while(lineFromFile!=null){
-                    Log.i("Baza",lineFromFile);
-                    argumentsOfCity=lineFromFile.split(",");
+                while (lineFromFile != null) {
+                    argumentsOfCity = lineFromFile.split(",");
                     country.setMark(argumentsOfCity[0]);
                     country.setNameSr(argumentsOfCity[1]);
                     country.setNameEn(argumentsOfCity[2]);

@@ -31,6 +31,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
 
     private LinkedList<Country> countriesDataList;
     private String selectedLanguage;
+    private final Random random = new Random();
     private int numberOfQuestions;
     private int numberOfCurrentQuestion;
     private int numberOfHints = 3;
@@ -58,9 +59,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_neighboring_country);
 
         CountryDBHelper countryDBHelper = new CountryDBHelper(NeighboringCountryActivity.this);
-        //CountryDBService.fillDadaBase(countryDBHelper, this);
         countriesDataList = countryDBHelper.getCountries();
-
 
         loadSetting();
 
@@ -117,7 +116,7 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (answerIsCorrect) {
                     Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.youHaveGivenAnAnswer), Toast.LENGTH_SHORT).show();
-                } else  if (numberOfHints == 0)
+                } else if (numberOfHints == 0)
                     Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.noMoreHints), Toast.LENGTH_SHORT).show();
                 else {
                     if (answer1Btn.isEnabled() && !answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
@@ -204,7 +203,6 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             Button btn = (Button) findViewById(v.getId());
             String selectedAnswer = btn.getText().toString();
 
-
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             dialogBuilder = new AlertDialog.Builder(NeighboringCountryActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
@@ -225,14 +223,14 @@ public class NeighboringCountryActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Answer answer = new Answer(questionTv.getText().toString(), selectedAnswer, null);
                     if (selectedAnswer.equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
-                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
                         btn.setBackgroundColor(getResources().getColor(R.color.green, null));
                         currentScore++;
                         currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                         answer.setCorrect(true);
                         answerIsCorrect = false;
                     } else {
-                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        Toast.makeText(NeighboringCountryActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
                         btn.setBackgroundColor(getResources().getColor(R.color.red, null));
 
                         if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNeighboringCountryEn() : currentCountry.getNeighboringCountrySr())) {
@@ -260,7 +258,6 @@ public class NeighboringCountryActivity extends AppCompatActivity {
 
         }
 
-
     }
 
     private void setQuestion() {
@@ -272,11 +269,10 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             numOfQuestionTv.setText(getResources().getString(R.string.question) + numberOfCurrentQuestion + "/" + numberOfQuestions);
 
             LinkedList<Country> data = new LinkedList<>();
-            Random ran = new Random();
             int i;
             //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
             while (data.size() != 4) {
-                i = ran.nextInt(20);
+                i = random.nextInt(20);
                 if (!data.contains(countriesDataList.get(i)))
                     data.add(countriesDataList.get(i));
             }
@@ -286,24 +282,18 @@ public class NeighboringCountryActivity extends AppCompatActivity {
             for (Country c : data) {
                 answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
             }
-            String country = null;
+            String country = selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr();
 
-            if (selectedLanguage.equals("en")) {
-                country = currentCountry.getNameEn();
-
-            } else {
-                country = currentCountry.getNameSr();
-            }
             questionTv.setText(getResources().getString(R.string.neighboringCountryQuestion) + " " + country + " ?");
-            i = ran.nextInt(4);
+            i = random.nextInt(4);
             answer1Btn.setText(answers.get(i));
             answers.remove(i);
-            i = ran.nextInt(3);
+            i = random.nextInt(3);
             answer1Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer1Btn.setEnabled(true);
             answer2Btn.setText(answers.get(i));
             answers.remove(i);
-            i = ran.nextInt(2);
+            i = random.nextInt(2);
             answer2Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer2Btn.setEnabled(true);
             answer3Btn.setText(answers.get(i));

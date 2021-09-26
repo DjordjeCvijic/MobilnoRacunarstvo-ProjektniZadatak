@@ -20,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038" />
+
     <TextView
         android:id="@+id/currentScoreTv"
         android:layout_width="wrap_content"
@@ -57,42 +58,41 @@
         <TextView
             android:id="@+id/questionTv"
             android:layout_width="297dp"
-            android:layout_height="64dp"
+            android:layout_height="84dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/capitalCitiesQuestion"
             android:textAlignment="center"
             android:textColor="@color/textColor"
-            android:textStyle="bold"
             android:textSize="20sp"
-            />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/answer1Btn"
             android:layout_width="200dp"
             android:layout_height="64dp"
-            android:textSize="17sp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/answer2Btn"
             android:layout_width="200dp"
             android:layout_height="64dp"
-            android:textSize="17sp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/answer3Btn"
             android:layout_width="200dp"
             android:layout_height="64dp"
-            android:textSize="17sp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/answer4Btn"
             android:layout_width="200dp"
             android:layout_height="64dp"
-            android:textSize="17sp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -124,7 +124,6 @@
 
     <ImageButton
         android:id="@+id/hintBtn"
-
         android:layout_width="59dp"
         android:layout_height="43dp"
         android:layout_marginBottom="20dp"
@@ -133,22 +132,21 @@
         app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/newsBtn"
-        app:layout_constraintVertical_bias="0.801"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_hint" />
 
     <TextView
         android:id="@+id/hintNumberTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="23sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/hintBtn"
         app:layout_constraintEnd_toStartOf="@+id/hintBtn"
         app:layout_constraintHorizontal_bias="0.907"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/hintBtn"
-        android:textColor="@color/textColor"
-        android:textSize="23sp"
-        android:textStyle="bold"
-        />
+        app:layout_constraintTop_toTopOf="@+id/hintBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

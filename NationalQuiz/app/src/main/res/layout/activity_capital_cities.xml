@@ -75,11 +75,11 @@
         <TextView
             android:id="@+id/questionTv"
             android:layout_width="350dp"
-            android:layout_height="84dp"
+            android:layout_height="100dp"
             android:text="@string/capitalCitiesQuestion"
             android:textAlignment="center"
             android:textColor="@color/textColor"
-            android:textSize="25sp"
+            android:textSize="23sp"
             android:textStyle="bold"
             android:layout_marginBottom="20dp"/>
 

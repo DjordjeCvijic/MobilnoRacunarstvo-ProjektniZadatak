@@ -53,7 +53,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.MRProject.nationalquiz.StartScreenActivity"/>
+
         <provider
             android:authorities="com.facebook.app.FacebookContentProvider386641319784381"
             android:name="com.facebook.FacebookContentProvider"

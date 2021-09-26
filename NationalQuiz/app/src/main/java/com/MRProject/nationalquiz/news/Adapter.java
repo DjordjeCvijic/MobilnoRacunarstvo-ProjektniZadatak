@@ -32,48 +32,45 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     List<Articles> articles;
     private boolean connection;
 
-    public Adapter(Context context, List<Articles> articles,boolean connection) {
+    public Adapter(Context context, List<Articles> articles, boolean connection) {
         this.context = context;
         this.articles = articles;
-        this.connection=connection;
+        this.connection = connection;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.items,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.items, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Articles a=articles.get(position);
+        final Articles a = articles.get(position);
         holder.tvTitle.setText(a.getTitle());
         holder.tvSource.setText(a.getSource().getName());
         holder.tvDate.setText(dateTime(a.getPublishedAt()));
 
-        if(connection){
-            String imageUrl=a.getUrlToImage();
-            String url=a.getUrl();
+        if (connection) {
+            String imageUrl = a.getUrlToImage();
             Picasso.with(context).load(imageUrl).into(holder.imageView);
-
-            //Log.i("clanak: ",a.toString());
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i("Drzava", a.getPublishedAt());
-                    Intent intent=new Intent(context, NewsDetailsActivity.class);
-                    intent.putExtra("title",a.getTitle());
-                    intent.putExtra("source",a.getSource().getName());
-                    intent.putExtra("time",dateTime(a.getPublishedAt()));
-                    intent.putExtra("desc",a.getDescription());
-                    intent.putExtra("imageUrl",a.getUrlToImage());
-                    intent.putExtra("url",a.getUrl());
+                    Intent intent = new Intent(context, NewsDetailsActivity.class);
+                    intent.putExtra("title", a.getTitle());
+                    intent.putExtra("source", a.getSource().getName());
+                    intent.putExtra("time", dateTime(a.getPublishedAt()));
+                    intent.putExtra("desc", a.getDescription());
+                    intent.putExtra("imageUrl", a.getUrlToImage());
+                    intent.putExtra("url", a.getUrl());
                     context.startActivity(intent);
                 }
             });
-        }else{
+        } else {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,40 +87,39 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle,tvSource,tvDate;
+        TextView tvTitle, tvSource, tvDate;
         ImageView imageView;
         CardView cardView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvTitle=itemView.findViewById(R.id.tvTitle);
-            tvSource=itemView.findViewById(R.id.tvSource);
-            tvDate=itemView.findViewById(R.id.tvDate);
-            imageView=itemView.findViewById(R.id.image);
-            cardView=itemView.findViewById(R.id.cardView);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvSource = itemView.findViewById(R.id.tvSource);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            imageView = itemView.findViewById(R.id.image);
+            cardView = itemView.findViewById(R.id.cardView);
 
         }
     }
 
-    public String dateTime(String t){
-        PrettyTime prettyTime=new PrettyTime(new Locale(getCountry()));
-        String time=null;
-        try{
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:",Locale.ENGLISH);
-            Date date=simpleDateFormat.parse(t);
-            time=prettyTime.format(date);
-        }catch (ParseException e){
+    public String dateTime(String t) {
+        PrettyTime prettyTime = new PrettyTime(new Locale(getCountry()));
+        String time = null;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:", Locale.ENGLISH);
+            Date date = simpleDateFormat.parse(t);
+            time = prettyTime.format(date);
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return time;
     }
 
-    public String getCountry(){
-        Locale locale=Locale.getDefault();
-        String country=locale.getCountry();
-        //Log.i("Drzava",country);
-        return  country.toLowerCase();
-        //return "rs";
+    public String getCountry() {
+        Locale locale = Locale.getDefault();
+        String country = locale.getCountry();
+        return country.toLowerCase();
 
     }
 }

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.MRProject.nationalquiz.models.Country;
 
@@ -34,8 +33,6 @@ public class CountryDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN15_LANDMARK_IMAGE = "landmark_image";
 
 
-
-
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN1_ID + " INTEGER PRIMARY KEY," +
@@ -43,7 +40,7 @@ public class CountryDBHelper extends SQLiteOpenHelper {
                     COLUMN3_NAME_SR + " TEXT," +
                     COLUMN4_NAME_EN + " TEXT," +
                     COLUMN5_CAPITAL_CITY_SR + " TEXT," +
-                    COLUMN6_CAPITAL_CITY_EN+ " TEXT," +
+                    COLUMN6_CAPITAL_CITY_EN + " TEXT," +
                     COLUMN7_NEIGHBORING_COUNTRY_SR + " TEXT," +
                     COLUMN8_NEIGHBORING_COUNTRY_EN + " TEXT," +
                     COLUMN9_COUNTRY_LANDMARK_SR + " TEXT," +
@@ -58,29 +55,25 @@ public class CountryDBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
 
-
-
     public CountryDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        Log.i("baza","konstruktor");
     }
 
     public void onCreate(SQLiteDatabase db) {
 
-        Log.i("baza","onCreate");
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        Log.i("baza","onUpdate");
+
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
 
     public void insert(Country countryToInsert) {
-        Log.i("baza","Insert");
+
         // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -105,83 +98,20 @@ public class CountryDBHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(TABLE_NAME, null, values);
     }
 
-    public void deleteDB(){
-        Log.i("baza","delete");
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(SQL_DELETE_ENTRIES);
-    }
 
 
 
-    //public List<Long> getID(String trazeniNaslov){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        // Define a projection that specifies which columns from the database
-//        // you will actually use after this query.
-//        String[] projection = {
-//                ID,
-//                COLUMN_NAME_TITLE,
-//                COLUMN_NAME_SUBTITLE
-//        };
-//        // Filter results WHERE "title" = 'My Title'
-//        String selection = COLUMN_NAME_TITLE + " = ?";
-//        String[] selectionArgs = { trazeniNaslov };
-//
-//        // How you want the results sorted in the resulting Cursor
-//        String sortOrder =
-//                COLUMN_NAME_SUBTITLE + " DESC";
-//
-//        Cursor cursor = db.query(
-//                TABLE_NAME,   // The table to query
-//                projection,             // The array of columns to return (pass null to get all)
-//                selection,              // The columns for the WHERE clause
-//                selectionArgs,          // The values for the WHERE clause
-//                null,                   // don't group the rows
-//                null,                   // don't filter by row groups
-//                sortOrder               // The sort order
-//        );
-//
-//        List itemIds = new ArrayList<>();
-//        while(cursor.moveToNext()) {
-//            long itemId = cursor.getLong(
-//                    cursor.getColumnIndexOrThrow(ID));
-//            itemIds.add(itemId);
-//        }
-//        cursor.close();
-//
-//        return itemIds;
-    //}
- //   public ArrayList<String> getSubtitles(){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        ArrayList subtitles = new ArrayList<String>();
-//        String[] projection = {
-//                ID,
-//                COLUMN_NAME_TITLE,
-//                COLUMN_NAME_SUBTITLE
-//        };
-//
-//        Cursor res =  db.rawQuery( "select * from "+ TABLE_NAME, null );
-//        res.moveToFirst();
-//
-//        while(res.isAfterLast() == false){
-//            subtitles.add(res.getString(res.getColumnIndex(COLUMN_NAME_SUBTITLE)));
-//            res.moveToNext();
-//        }
-//
-//
-//
-//        return subtitles
-//        }
 
-    public LinkedList<Country> getCountries(){
-        LinkedList<Country> countries=new LinkedList<>();
+
+    public LinkedList<Country> getCountries() {
+        LinkedList<Country> countries = new LinkedList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+ TABLE_NAME, null );
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
         res.moveToFirst();
 
 
-        while(res.isAfterLast() == false){
-            Country countryTmp=new Country();
+        while (res.isAfterLast() == false) {
+            Country countryTmp = new Country();
             countryTmp.setId(res.getLong(res.getColumnIndex(COLUMN1_ID)));
             countryTmp.setMark(res.getString(res.getColumnIndex(COLUMN2_MARK)));
             countryTmp.setNameSr(res.getString(res.getColumnIndex(COLUMN3_NAME_SR)));
@@ -202,14 +132,13 @@ public class CountryDBHelper extends SQLiteOpenHelper {
             res.moveToNext();
         }
 
-
+        res.close();
         return countries;
     }
 
-    public int numberOfRows(){
+    public int numberOfRows() {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-        return numRows;
+        return (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
     }
 }

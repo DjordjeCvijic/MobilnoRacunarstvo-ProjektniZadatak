@@ -1,7 +1,6 @@
 package com.MRProject.nationalquiz.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.MRProject.nationalquiz.models.Answer;
 import com.MRProject.nationalquiz.models.GameResult;
@@ -18,8 +17,8 @@ public class GameResultService {
 
     public static void writeGameResult(GameResult gameResultToSave, Context context) {
         try {
-            FileOutputStream fileout = context.openFileOutput(fileName, context.MODE_APPEND);//treba . txt
-            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+            FileOutputStream fileOut = context.openFileOutput(fileName, context.MODE_APPEND);
+            OutputStreamWriter outputWriter = new OutputStreamWriter(fileOut);
             outputWriter.append("$" + gameResultToSave.toString());
             outputWriter.close();
 
@@ -40,9 +39,9 @@ public class GameResultService {
             int charRead;
 
             while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                // char to string conversion
-                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                result += readstring;
+
+                String readString = String.copyValueOf(inputBuffer, 0, charRead);
+                result += readString;
             }
             InputRead.close();
 
@@ -59,7 +58,7 @@ public class GameResultService {
         Answer a;
         String dataFromFile = readGameResult(context);
         String[] gamesResultsData = dataFromFile.split("\\$");
-       // Log.d("rezultati", "duzina "+gamesResultsData[0]);
+
         for (int i = 1; i < gamesResultsData.length; i++) {
             gameResult = new GameResult();
             String[] gamesData = gamesResultsData[i].split("#");
@@ -69,11 +68,9 @@ public class GameResultService {
             gameResult.setScore(playerInfo[2]);
             for (int j = 1; j < gamesData.length; j++) {
                 String[] gameInfo = gamesData[j].split(",");
-                a = new Answer(gameInfo[0], gameInfo[1], gameInfo[2].equals("1")?true:false, gameInfo[3]);
-                Log.d("Podaci", a.toString());
+                a = new Answer(gameInfo[0], gameInfo[1], gameInfo[2].equals("1"), gameInfo[3]);
                 gameResult.addAnswer(a);
             }
-            Log.d("rezultati", gameResult.toString());
             gameResultList.add(gameResult);
         }
 

@@ -27,9 +27,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         if(!title.equals("")){
             txtTitle.setText(title);
         }
-
         ImageView imageView = (ImageView) view.findViewById(R.id.markerImg);
-
         imageView.setImageResource(mContext.getResources().getIdentifier(marker.getSnippet(),"drawable",mContext.getPackageName()));
     }
 

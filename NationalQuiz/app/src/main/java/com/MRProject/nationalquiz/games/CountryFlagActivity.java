@@ -60,10 +60,8 @@ public class CountryFlagActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country_flag);
 
-
         CountryDBHelper countryDBHelper = new CountryDBHelper(CountryFlagActivity.this);
         countriesDataList = countryDBHelper.getCountries();
-
 
         loadSetting();
 
@@ -121,7 +119,7 @@ public class CountryFlagActivity extends AppCompatActivity {
                     Answer answer = new Answer(questionTv.getText().toString(), answerEt.getText().toString().toLowerCase(), currentCountry.getFlagImage());
                     if (answerEt.getText().toString().toLowerCase().equals(
                             (selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr()).toLowerCase())) {
-                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_LONG).show();
+                        Toast.makeText(CountryFlagActivity.this, getResources().getString(R.string.correctAnswer), Toast.LENGTH_SHORT).show();
                         currentScore++;
                         currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                         enterAnswerBtn.setBackgroundColor(getResources().getColor(R.color.green, null));
@@ -188,7 +186,6 @@ public class CountryFlagActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         finish();
-                        //CountryFlagActivity.super.onBackPressed();
                         dialog.dismiss();
                     }
                 });
@@ -228,7 +225,7 @@ public class CountryFlagActivity extends AppCompatActivity {
             }
             String lettersToShow = "";
             while (letters.size() != 0) {
-                lettersToShow = lettersToShow + " " + letters.remove(ran.nextInt(letters.size()));
+                lettersToShow = lettersToShow.concat(" ").concat(letters.remove(ran.nextInt(letters.size())));
             }
 
             lettersTv.setText(lettersToShow);
@@ -242,7 +239,6 @@ public class CountryFlagActivity extends AppCompatActivity {
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         selectedLanguage = sp.getString("LANGUAGE", "en");
-
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
         numberOfQuestions = Integer.parseInt(number);
 

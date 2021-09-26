@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 
 import com.MRProject.nationalquiz.R;
@@ -25,7 +25,6 @@ public class GamesResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_results);
-        Intent intent = getIntent();
 
 
         recyclerView=findViewById(R.id.recyclerViewForResult);

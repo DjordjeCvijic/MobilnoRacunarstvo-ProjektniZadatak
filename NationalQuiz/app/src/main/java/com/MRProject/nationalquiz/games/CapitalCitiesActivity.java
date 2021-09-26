@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,6 @@ import com.MRProject.nationalquiz.models.Articles;
 import com.MRProject.nationalquiz.news.NewsActivity;
 import com.MRProject.nationalquiz.R;
 import com.MRProject.nationalquiz.data_base.CountryDBHelper;
-import com.MRProject.nationalquiz.model_view.CapitalCitiesActivityModelView;
 import com.MRProject.nationalquiz.models.Answer;
 import com.MRProject.nationalquiz.models.Country;
 import com.MRProject.nationalquiz.models.GameResult;
@@ -65,26 +63,13 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
     public static Country currentCountry;
 
-    int imageToShow = 0;
-    TextView tv;
-    CapitalCitiesActivityModelView viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capital_cities);
 
-//         tv=findViewById(R.id.tv);
-//         viewModel = new ViewModelProvider(this).get(CapitalCitiesActivityModelView.class);
-//        viewModel.text.observe(this, new Observer<String>() {
-//                    @Override
-//                    public void onChanged(String s) {
-//                    tv.setText(s);
-//                    }
-//                });
-
         CountryDBHelper countryDBHelper = new CountryDBHelper(CapitalCitiesActivity.this);
-        // CountryDBService.fillDadaBase(countryDBHelper, this);
         countriesDataList = countryDBHelper.getCountries();
 
         loadSetting();
@@ -138,9 +123,7 @@ public class CapitalCitiesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (answerIsCorrect) {
-                    Log.d("novosti", NewsService.readNewsCache(CapitalCitiesActivity.this));
                     List<Articles> a = NewsService.getNewsCacheFromFileForCountry(CapitalCitiesActivity.this, "*");
-                    Log.d("novosti", "broj " + a.size());
                     Intent intent = new Intent(CapitalCitiesActivity.this, NewsActivity.class);
                     intent.putExtra("country", currentCountry.getMark());
                     intent.putExtra("internet", internetIsConnected());
@@ -159,8 +142,10 @@ public class CapitalCitiesActivity extends AppCompatActivity {
                 if (answerIsCorrect && internetIsConnected()) {
                     Intent intent = new Intent(CapitalCitiesActivity.this, MapsActivity.class);
                     startActivity(intent);
-                } else
+                } else if (!internetIsConnected())
                     Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(CapitalCitiesActivity.this, getResources().getString(R.string.youHaveToGiveAnAnswer), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -344,14 +329,9 @@ public class CapitalCitiesActivity extends AppCompatActivity {
 
                 answers.add(selectedLanguage.equals("en") ? c.getCapitalCityEn() : c.getCapitalCitySr());
             }
-            String country = null;
+            String country = selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr();
 
-            if (selectedLanguage.equals("en")) {
-                country = currentCountry.getNameEn();
 
-            } else {
-                country = currentCountry.getNameSr();
-            }
             questionTv.setText(getResources().getString(R.string.capitalCitiesQuestion) + " " + country + " ?");
             i = ran.nextInt(4);
             answer1Btn.setText(answers.get(i));
@@ -380,11 +360,8 @@ public class CapitalCitiesActivity extends AppCompatActivity {
     private void loadSetting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         selectedLanguage = sp.getString("LANGUAGE", "en");
-
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
         numberOfQuestions = Integer.parseInt(number);
-
-
         newsCaching = sp.getBoolean("CACHING", false);
     }
 
@@ -398,7 +375,6 @@ public class CapitalCitiesActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
-            // connected to the internet
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 connected = true;
             }

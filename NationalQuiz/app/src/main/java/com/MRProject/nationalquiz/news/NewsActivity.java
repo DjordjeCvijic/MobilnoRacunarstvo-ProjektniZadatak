@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.MRProject.nationalquiz.R;
@@ -40,7 +39,6 @@ public class NewsActivity extends AppCompatActivity {
         connection = intent.getBooleanExtra("internet", false);
         caching = intent.getBooleanExtra("caching", false);
 
-        Log.i("Drzava", "" + NewsService.readNewsCache(NewsActivity.this));
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -62,18 +60,13 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Headlines> call, Response<Headlines> response) {
                 if (response.isSuccessful() && response.body().getArticles() != null) {
-                    Log.i("Drzava", "Radi");
                     articles.clear();
                     articles = response.body().getArticles();
-                    Log.i("Drzava", "a" + articles.size());
                     adapter = new Adapter(NewsActivity.this, articles, connection);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-                    //getData();;
                     if (caching) {
                         List<Articles> existedArticlesList = NewsService.getNewsCacheFromFileForCountry(NewsActivity.this, country);
-                        for (Articles a : existedArticlesList)
-                            Log.i("Drzava", "a" + a);
                         List<Articles> articlesToCacheList = new LinkedList<>();
                         for (Articles newArticle : articles) {
                             boolean exist = false;
@@ -94,19 +87,15 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Headlines> call, Throwable t) {
                 Toast.makeText(NewsActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                Log.i("Greska", t.getLocalizedMessage());
             }
         });
     }
 
     private void getCachedNews(String countryMark) {
-
         articles.clear();
         articles = NewsService.getNewsCacheFromFileForCountry(NewsActivity.this, countryMark);
         if(articles.size()==0)
             Toast.makeText(this, getResources().getString(R.string.noCachedNews), Toast.LENGTH_LONG).show();
-        for(Articles a:articles)
-            Log.i("kes", "stanje povuceno " + a);
         adapter = new Adapter(NewsActivity.this, articles, connection);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

@@ -51,4 +51,6 @@
     <string name="youHaveGivenAnAnswer">You have given an answer</string>
     <string name="noCachedNews">No cached news</string>
     <string name="resultSaved">Result is saved</string>
+    <string name="source">Source</string>
+    <string name="date">Date</string>
 </resources>

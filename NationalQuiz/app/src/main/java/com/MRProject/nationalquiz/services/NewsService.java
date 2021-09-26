@@ -1,7 +1,6 @@
 package com.MRProject.nationalquiz.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.MRProject.nationalquiz.models.Answer;
 import com.MRProject.nationalquiz.models.Articles;
@@ -20,16 +19,17 @@ public class NewsService {
 
     public static void writeNewsCache(List<Articles> articlesList, Context context, String countryMark) {
         try {
-            FileOutputStream fileout = context.openFileOutput(fileName, context.MODE_APPEND);//treba . txt
-            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+            FileOutputStream fileOut = context.openFileOutput(fileName, Context.MODE_APPEND);
+            OutputStreamWriter outputWriter = new OutputStreamWriter(fileOut);
             for (Articles articles : articlesList) {
-                outputWriter.append("$terminated$" + countryMark+"#terminated#"+articles.getTitle()+"#terminated#"+articles.getSource().getName()+"#terminated#"+articles.getPublishedAt());
+                outputWriter.append("$terminated$" + countryMark + "#terminated#" + articles.getTitle() + "#terminated#" + articles.getSource().getName() + "#terminated#" + articles.getPublishedAt());
             }
             outputWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static String readNewsCache(Context context) {
         final int READ_BLOCK_SIZE = 100;
         String result = "";
@@ -43,8 +43,8 @@ public class NewsService {
 
             while ((charRead = InputRead.read(inputBuffer)) > 0) {
                 // char to string conversion
-                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                result += readstring;
+                String readString = String.copyValueOf(inputBuffer, 0, charRead);
+                result += readString;
             }
             InputRead.close();
 
@@ -52,22 +52,19 @@ public class NewsService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("kes", result);
         return result;
     }
-    public static List<Articles> getNewsCacheFromFileForCountry(Context context,String countryMark) {
+
+    public static List<Articles> getNewsCacheFromFileForCountry(Context context, String countryMark) {
         LinkedList<Articles> articlesList = new LinkedList<>();
-        GameResult gameResult;
-        Answer a;
         String dataFromFile = readNewsCache(context);
         String[] newsCacheData = dataFromFile.split("\\$terminated\\$");
-        // Log.d("rezultati", "duzina "+gamesResultsData[0]);
         for (int i = 1; i < newsCacheData.length; i++) {
-            Articles articles=new Articles();
-            String[] articlesData=newsCacheData[i].split("#terminated#");
-            if(countryMark.equals(articlesData[0]) || countryMark.equals("*")){
+            Articles articles = new Articles();
+            String[] articlesData = newsCacheData[i].split("#terminated#");
+            if (countryMark.equals(articlesData[0]) || countryMark.equals("*")) {
                 articles.setTitle(articlesData[1]);
-                Source source=new Source();
+                Source source = new Source();
                 source.setName(articlesData[2]);
                 articles.setSource(source);
                 articles.setPublishedAt(articlesData[3]);

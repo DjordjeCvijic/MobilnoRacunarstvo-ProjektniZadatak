@@ -47,7 +47,8 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/name"
                 android:gravity="center_vertical|center_horizontal"
-                android:textSize="20dp" />
+                android:textSize="20sp"
+                android:textColor="@color/textColor"/>
 
             <EditText
                 android:id="@+id/enteredNameEt"
@@ -56,7 +57,7 @@
                 android:contextClickable="false"
                 android:cursorVisible="true"
                 android:textCursorDrawable="@null"
-                android:textSize="20dp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 

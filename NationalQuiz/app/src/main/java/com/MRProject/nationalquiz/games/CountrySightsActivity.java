@@ -34,7 +34,7 @@ public class CountrySightsActivity extends AppCompatActivity {
     private String selectedLanguage;
     private int numberOfQuestions;
     public static Country currentCountry;
-    private Random random = new Random();
+    private final Random random = new Random();
     private int numberOfCurrentQuestion = 0;
     private int numberOfHints = 3;
     private int currentScore = 0;
@@ -62,7 +62,6 @@ public class CountrySightsActivity extends AppCompatActivity {
 
 
         CountryDBHelper countryDBHelper = new CountryDBHelper(CountrySightsActivity.this);
-        //CountryDBService.fillDadaBase(countryDBHelper, this);
         countriesDataList = countryDBHelper.getCountries();
 
         loadSetting();
@@ -79,7 +78,6 @@ public class CountrySightsActivity extends AppCompatActivity {
         answer3Btn = findViewById(R.id.answer3Btn);
         answer4Btn = findViewById(R.id.answer4Btn);
         hintBtn = findViewById(R.id.hintBtn);
-
 
         questionTv.setText(getResources().getString(R.string.countrySightsQuestion));
 
@@ -207,7 +205,6 @@ public class CountrySightsActivity extends AppCompatActivity {
             Button btn = (Button) findViewById(v.getId());
             String selectedAnswer = btn.getText().toString();
 
-
             AlertDialog.Builder dialogBuilder;
             AlertDialog dialog;
             dialogBuilder = new AlertDialog.Builder(CountrySightsActivity.this);//ISPRED KOG CONTEXT-A DA PRIKAZE POPUP
@@ -235,7 +232,7 @@ public class CountrySightsActivity extends AppCompatActivity {
                         currentScore++;
                         currentScoreTv.setText(getResources().getString(R.string.currentScore) + currentScore);
                     } else {
-                        Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_LONG).show();
+                        Toast.makeText(CountrySightsActivity.this, getResources().getString(R.string.incorrectAnswer), Toast.LENGTH_SHORT).show();
                         btn.setBackgroundColor(getResources().getColor(R.color.red, null));
 
                         if (answer1Btn.getText().toString().equals(selectedLanguage.equals("en") ? currentCountry.getNameEn() : currentCountry.getNameSr())) {
@@ -282,11 +279,10 @@ public class CountrySightsActivity extends AppCompatActivity {
 
 
             LinkedList<Country> data = new LinkedList<>();
-            Random ran = new Random();
             int i;
             //izvlacenje cetiri drzave koje ce biti u opticaju za pitanje i odgovor
             while (data.size() != 4) {
-                i = ran.nextInt(20);
+                i = random.nextInt(20);
                 if (!data.contains(countriesDataList.get(i)))
                     data.add(countriesDataList.get(i));
             }
@@ -297,15 +293,15 @@ public class CountrySightsActivity extends AppCompatActivity {
             for (Country c : data) {
                 answers.add(selectedLanguage.equals("en") ? c.getNameEn() : c.getNameSr());
             }
-            i = ran.nextInt(4);
+            i = random.nextInt(4);
             answer1Btn.setText(answers.get(i));
             answers.remove(i);
-            i = ran.nextInt(3);
+            i = random.nextInt(3);
             answer1Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer1Btn.setEnabled(true);
             answer2Btn.setText(answers.get(i));
             answers.remove(i);
-            i = ran.nextInt(2);
+            i = random.nextInt(2);
             answer2Btn.setBackgroundColor(getResources().getColor(R.color.myPrimary, null));
             answer2Btn.setEnabled(true);
             answer3Btn.setText(answers.get(i));

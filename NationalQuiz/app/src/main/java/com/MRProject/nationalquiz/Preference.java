@@ -15,9 +15,9 @@ import java.util.Locale;
 
 public class Preference extends PreferenceActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setTheme(R.style.PreferencesTheme);
         addPreferencesFromResource(R.xml.prefs);
@@ -26,53 +26,26 @@ public class Preference extends PreferenceActivity {
 
     private void load_setting() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        //ovo je za postavljanje vrijednosti na osnovu parametra kada se otvara ovaj aktiviti
-        boolean chk_night = sp.getBoolean("NIGHT", false);
-        if (chk_night) {
-            //ovdje mijenjamo boju pozadine
-            //Toast.makeText(this, "nocni mod load on", Toast.LENGTH_SHORT).show();
-        } else {
-            //Toast.makeText(this, "nocni mod load of", Toast.LENGTH_SHORT).show();
-        }
+
         //ovo je za postavljanje listener-a za promjenu
         CheckBoxPreference checkBoxPreference_instant = (CheckBoxPreference) findPreference("CACHING");
         checkBoxPreference_instant.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference prefs, Object obj) {
                 boolean yes = (boolean) obj;
-
-                if (yes) {
-                    //Toast.makeText(Preference.this, "nocni mod change on", Toast.LENGTH_SHORT).show();
-                } //else
-                    //Toast.makeText(Preference.this, "nocni mod change off", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
 
         ListPreference lp = (ListPreference) findPreference("LANGUAGE");
         String language = sp.getString("LANGUAGE", "en");
-//        if ("sr".equals(orient)) {
-//            //Toast.makeText(this, "orijentacija load 1", Toast.LENGTH_SHORT).show();
-//            lp.setSummary(lp.getEntry());//ovo da pri pokretanju popuni onaj natpis ispod
-//        }else
+
         lp.setSummary(lp.getEntries()[lp.findIndexOfValue(language)]);
         lp.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
                 String item = (String) newValue;
                 if (preference.getKey().equals("LANGUAGE")) {
-//                    switch (item) {
-//                        case "sr":
-//                            Toast.makeText(Preference.this, item, Toast.LENGTH_SHORT).show();
-//                            //setLocale("sr");
-//                            break;
-//                        case "en":
-//                            Toast.makeText(Preference.this, item, Toast.LENGTH_SHORT).show();
-//                            //setLocale("en");
-//                            break;
-//
-//                    }
-
                     //da promijeni onaj naziv ispod
                     ListPreference lpp = (ListPreference) preference;
                     lpp.setSummary(lpp.getEntries()[lpp.findIndexOfValue(item)]);
@@ -86,12 +59,8 @@ public class Preference extends PreferenceActivity {
             }
         });
 
-        EditTextPreference etp=(EditTextPreference) findPreference("NUMBER_OF_QUESTION");
+        EditTextPreference etp = (EditTextPreference) findPreference("NUMBER_OF_QUESTION");
         String number = sp.getString("NUMBER_OF_QUESTION", "5");
-//        if ("sr".equals(orient)) {
-//            //Toast.makeText(this, "orijentacija load 1", Toast.LENGTH_SHORT).show();
-//            lp.setSummary(lp.getEntry());//ovo da pri pokretanju popuni onaj natpis ispod
-//        }else
         etp.setSummary(number);
         etp.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
@@ -99,11 +68,7 @@ public class Preference extends PreferenceActivity {
                 String newSummary = (String) newValue;
                 if (preference.getKey().equals("NUMBER_OF_QUESTION")) {
 
-
-//                    //da promijeni onaj naziv ispod
-//                    ListPreference lpp = (ListPreference) preference;
-//                    lpp.setSummary(lpp.getEntries()[lpp.findIndexOfValue(item)]);
-                    EditTextPreference etp1=(EditTextPreference)preference;
+                    EditTextPreference etp1 = (EditTextPreference) preference;
                     etp1.setSummary(newSummary);
 
                 }
@@ -112,7 +77,8 @@ public class Preference extends PreferenceActivity {
         });
 
     }
-    public void setLocale(String languageToSet){
+
+    public void setLocale(String languageToSet) {
         Locale locale = new Locale(languageToSet);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -131,7 +97,7 @@ public class Preference extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-        Intent i=new Intent(Preference.this,MainActivity.class);
+        Intent i = new Intent(Preference.this, MainActivity.class);
         startActivity(i);
         super.onBackPressed();
     }

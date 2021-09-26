@@ -84,35 +84,29 @@ public class GamesResultsAdapter extends RecyclerView.Adapter<GamesResultsAdapte
 
         holder.scoreTv.setText(context.getResources().getString(R.string.finalScore) + " " + gameResult.getScore());
 
-        holder.openResultDetailsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.openResultDetailsBtn.setOnClickListener(v -> {
 
-                Intent intent = new Intent(context, GameResultDetailsActivity.class);
-                intent.putExtra("date", gameResult.getDate());
-                intent.putExtra("title", gameResult.getPlayerName() + " " + localDateTime.format(formatter));
-                context.startActivity(intent);
+            Intent intent = new Intent(context, GameResultDetailsActivity.class);
+            intent.putExtra("date", gameResult.getDate());
+            intent.putExtra("title", gameResult.getPlayerName() + " " + localDateTime.format(formatter));
+            context.startActivity(intent);
 
 
-            }
         });
-        holder.shareGameResultBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (internetIsConnected()) {
-                    FacebookSdk.sdkInitialize(context.getApplicationContext());
-                    ShareDialog shareDialog;
-                    shareDialog = new ShareDialog(activity);
+        holder.shareGameResultBtn.setOnClickListener(v -> {
+            if (internetIsConnected()) {
+                FacebookSdk.sdkInitialize(context.getApplicationContext());
+                ShareDialog shareDialog;
+                shareDialog = new ShareDialog(activity);
 
 
-                    ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(context.getResources().getString(R.string.finalScore) + gameResult.getScore())
-                            .setContentUrl(Uri.parse("https://play.google.com/store")).build();
-                    if (ShareDialog.canShow(ShareLinkContent.class)) {
-                        shareDialog.show(linkContent);
-                    }
-                } else
-                    Toast.makeText(context, context.getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
-            }
+                ShareLinkContent linkContent = new ShareLinkContent.Builder().setQuote(context.getResources().getString(R.string.finalScore) + gameResult.getScore())
+                        .setContentUrl(Uri.parse("https://play.google.com/store")).build();
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+                    shareDialog.show(linkContent);
+                }
+            } else
+                Toast.makeText(context, context.getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
         });
 
     }
