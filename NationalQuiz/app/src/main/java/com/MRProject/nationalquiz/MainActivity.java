@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.MRProject.nationalquiz.data_base.CountryDBHelper;
 import com.MRProject.nationalquiz.game_result.GamesResultsActivity;
